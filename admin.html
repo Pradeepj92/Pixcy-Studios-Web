@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Pixcy Studios</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-header">
+        <h1>Pixcy Studios - Admin Panel</h1>
+        <a href="index.html" class="btn-back">← Back to Website</a>
+    </div>
+
+    <div class="admin-container">
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="branding">Logo & Branding</button>
+            <button class="tab-btn" data-tab="hero">Hero Section</button>
+            <button class="tab-btn" data-tab="services">Services</button>
+            <button class="tab-btn" data-tab="portfolio">Portfolio</button>
+            <button class="tab-btn" data-tab="couples">Couples</button>
+            <button class="tab-btn" data-tab="testimonials">Testimonials</button>
+            <button class="tab-btn" data-tab="about">About</button>
+            <button class="tab-btn" data-tab="contact">Contact Info</button>
+        </div>
+
+        <!-- Branding Tab -->
+        <div class="tab-content active" data-content="branding">
+            <h2>Logo & Branding</h2>
+            <div class="form-group">
+                <label>Logo Text (appears in header)</label>
+                <input type="text" id="logo-text" placeholder="PIXCY STUDIOS">
+            </div>
+            <div class="form-group">
+                <label>Or Upload Logo Image (optional)</label>
+                <input type="file" id="logo-upload" accept="image/*">
+                <div class="preview" id="logo-preview"></div>
+            </div>
+            <button class="btn-save" onclick="saveBranding()">Save Branding</button>
+            <div class="message" id="branding-message"></div>
+        </div>
+
+        <!-- Hero Tab -->
+        <div class="tab-content" data-content="hero">
+            <h2>Hero Section</h2>
+            <div class="form-group">
+                <label>Main Headline</label>
+                <input type="text" id="hero-title" placeholder="Capturing Life's Precious Moments">
+            </div>
+            <div class="form-group">
+                <label>Subtitle</label>
+                <input type="text" id="hero-subtitle" placeholder="Premium Wedding Photography...">
+            </div>
+            <button class="btn-save" onclick="saveHero()">Save Hero</button>
+            <div class="message" id="hero-message"></div>
+        </div>
+
+        <!-- Services Tab -->
+        <div class="tab-content" data-content="services">
+            <h2>Services</h2>
+            <p class="help-text">Upload service images & add descriptions</p>
+            <div id="services-container"></div>
+            <button class="btn-add" onclick="addService()">+ Add Service</button>
+            <button class="btn-save" onclick="saveServices()">Save All Services</button>
+            <div class="message" id="services-message"></div>
+        </div>
+
+        <!-- Portfolio Tab -->
+        <div class="tab-content" data-content="portfolio">
+            <h2>Portfolio Gallery</h2>
+            <p class="help-text">Drag & drop portfolio photos</p>
+            <div class="drop-zone" id="portfolio-drop">
+                <p>📸 Drag & Drop Photos Here</p>
+                <button type="button" class="btn-upload" onclick="document.getElementById('portfolio-input').click()">Choose Files</button>
+                <input type="file" id="portfolio-input" multiple accept="image/*" style="display: none;">
+            </div>
+            <div class="preview-grid" id="portfolio-preview"></div>
+            <button class="btn-save" onclick="savePortfolio()">Save Portfolio</button>
+            <div class="message" id="portfolio-message"></div>
+        </div>
+
+        <!-- Couples Tab -->
+        <div class="tab-content" data-content="couples">
+            <h2>Couple Albums</h2>
+            <div id="couples-container"></div>
+            <button class="btn-add" onclick="addCouple()">+ Add Couple</button>
+            <button class="btn-save" onclick="saveCouples()">Save All Couples</button>
+            <div class="message" id="couples-message"></div>
+        </div>
+
+        <!-- Testimonials Tab -->
+        <div class="tab-content" data-content="testimonials">
+            <h2>Client Testimonials</h2>
+            <div id="testimonials-container"></div>
+            <button class="btn-add" onclick="addTestimonial()">+ Add Testimonial</button>
+            <button class="btn-save" onclick="saveTestimonials()">Save Testimonials</button>
+            <div class="message" id="testimonials-message"></div>
+        </div>
+
+        <!-- About Tab -->
+        <div class="tab-content" data-content="about">
+            <h2>About Section</h2>
+            <div class="form-group">
+                <label>Section Title</label>
+                <input type="text" id="about-title" placeholder="About Pixcy Studios">
+            </div>
+            <div class="form-group">
+                <label>About Text (HTML supported)</label>
+                <textarea id="about-text" rows="10" placeholder="Your story..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>About Image</label>
+                <input type="file" id="about-image" accept="image/*">
+                <div class="preview" id="about-preview"></div>
+            </div>
+            <button class="btn-save" onclick="saveAbout()">Save About</button>
+            <div class="message" id="about-message"></div>
+        </div>
+
+        <!-- Contact Tab -->
+        <div class="tab-content" data-content="contact">
+            <h2>Contact Information</h2>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="contact-location" placeholder="Chennai, Tamil Nadu">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="contact-email" placeholder="hello@pixcystudios.com">
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" id="contact-phone" placeholder="+91 98765 43210">
+            </div>
+            <div class="form-group">
+                <label>WhatsApp Number (with country code)</label>
+                <input type="tel" id="whatsapp-number" placeholder="919876543210">
+            </div>
+            <div class="form-group">
+                <label>Instagram URL</label>
+                <input type="url" id="instagram-url" placeholder="https://instagram.com/pixcystudios">
+            </div>
+            <div class="form-group">
+                <label>YouTube URL</label>
+                <input type="url" id="youtube-url" placeholder="https://youtube.com/@pixcystudios">
+            </div>
+            <button class="btn-save" onclick="saveContact()">Save Contact Info</button>
+            <div class="message" id="contact-message"></div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
