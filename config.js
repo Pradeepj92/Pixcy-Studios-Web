@@ -58,3 +58,5 @@ async function uploadImage(file) {
   const result = await res.json();
   return result.secure_url;
 }
+
+export { dbGet, dbSet, uploadImage };
