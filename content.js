@@ -105,22 +105,46 @@ async function loadVideos() {
     if (!grid) return;
 
     if (videos.length === 0) {
-        grid.innerHTML = '<div class="videos-placeholder">No videos added yet. Add YouTube video URLs in your admin panel.</div>';
+        grid.innerHTML = '<div class="videos-placeholder">No videos added yet. Add YouTube URLs in admin panel.</div>';
         return;
     }
 
-    grid.innerHTML = videos.map(url => {
-        // Convert any youtube URL format to embed URL
-        let embedUrl = url;
+    grid.innerHTML = videos.map((url, i) => {
         const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([-\w]+)/);
-        if (match) embedUrl = `https://www.youtube.com/embed/${match[1]}`;
+        const id = match ? match[1] : null;
+        if (!id) return '';
+        const thumb = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+        const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
         return `
-            <div class="video-embed">
-                <iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-            </div>
-        `;
+            <div class="yt-card" onclick="openVideoModal('${embedUrl}')">
+                <div class="yt-thumb">
+                    <img src="${thumb}" alt="Video ${i+1}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${id}/hqdefault.jpg'">
+                    <div class="yt-overlay"></div>
+                    <div class="yt-play-btn">
+                        <svg viewBox="0 0 68 48" width="56" height="40">
+                            <path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24S68 12.5 66.5 7.7z" fill="#ff0000"/>
+                            <path d="M27 34l18-10-18-10v20z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="yt-duration-badge">▶ Watch</div>
+                </div>
+            </div>`;
     }).join('');
 }
+
+window.openVideoModal = function(embedUrl) {
+    const modal = document.getElementById('video-modal');
+    document.getElementById('video-modal-iframe').src = embedUrl;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+window.closeVideoModal = function() {
+    const modal = document.getElementById('video-modal');
+    document.getElementById('video-modal-iframe').src = '';
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+};
 
 async function loadCouples() {
     const data = await dbGet('couples');
@@ -153,15 +177,14 @@ async function loadTestimonials() {
         return;
     }
 
-    // Shuffle randomly every page load
     const testimonials = shuffle(rawList);
 
-    let html = testimonials.map((t, i) => {
+    // Build infinite-loop carousel: duplicate cards for seamless loop
+    const cards = testimonials.map((t) => {
         const initial = t.author ? t.author.charAt(0).toUpperCase() : 'G';
         return `
-        <div class="testimonial-slide ${i === 0 ? 'active' : ''}" id="test-slide-${i}">
-            <div class="google-review-card">
-                <div class="google-review-header">
+            <div class="review-card">
+                <div class="review-card-top">
                     <div class="google-reviewer">
                         <div class="google-avatar">${initial}</div>
                         <div>
@@ -169,30 +192,50 @@ async function loadTestimonials() {
                             <div class="google-date">${t.role || 'Google Review'}</div>
                         </div>
                     </div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="google-icon">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="G" class="google-icon">
                 </div>
                 <div class="google-stars">★★★★★</div>
                 <div class="google-text">"${t.text}"</div>
-            </div>
-        </div>
-    `}).join('');
+            </div>`;
+    }).join('');
 
-    if (testimonials.length > 1) {
-        html += `
-            <div class="test-nav">
-                ${testimonials.map((_, i) => `<div class="test-dot ${i === 0 ? 'active' : ''}" onclick="showTestimonial(${i})"></div>`).join('')}
-            </div>
-        `;
-        
-        window.showTestimonial = (index) => {
-            document.querySelectorAll('.testimonial-slide').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.test-dot').forEach(el => el.classList.remove('active'));
-            document.getElementById(`test-slide-${index}`).classList.add('active');
-            document.querySelectorAll('.test-dot')[index].classList.add('active');
-        };
+    // Duplicate for seamless loop
+    slider.innerHTML = `
+        <div class="reviews-track" id="reviews-track">
+            ${cards}${cards}
+        </div>
+    `;
+
+    // Auto-scroll animation
+    startReviewCarousel();
+}
+
+function startReviewCarousel() {
+    const track = document.getElementById('reviews-track');
+    if (!track) return;
+
+    let pos = 0;
+    let rafId = null;
+    let paused = false;
+    const cardWidth = 380 + 24; // card width + gap
+    const totalCards = track.children.length / 2;
+    const maxPos = cardWidth * totalCards;
+
+    function step() {
+        if (!paused) {
+            pos += 0.5;
+            if (pos >= maxPos) pos = 0;
+            track.style.transform = `translateX(-${pos}px)`;
+        }
+        rafId = requestAnimationFrame(step);
     }
-    
-    slider.innerHTML = html;
+
+    rafId = requestAnimationFrame(step);
+
+    // Pause on hover, resume on leave
+    const wrapper = track.parentElement;
+    wrapper.addEventListener('mouseenter', () => { paused = true; });
+    wrapper.addEventListener('mouseleave', () => { paused = false; });
 }
 
 async function loadAbout() {

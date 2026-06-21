@@ -209,6 +209,16 @@
         </div>
     </div>
 
+    <!-- Video Modal -->
+    <div class="video-modal" id="video-modal" onclick="if(event.target===this)closeVideoModal()">
+        <div class="video-modal-inner">
+            <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+            <div class="video-modal-frame">
+                <iframe id="video-modal-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="content.js"></script>
     <script src="script.js"></script>
 </body>
