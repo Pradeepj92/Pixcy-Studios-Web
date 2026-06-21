@@ -8,6 +8,7 @@ let servicesData = [];
 let portfolioData = [];   // array of Cloudinary URLs
 let couplesData = [];
 let testimonialsData = [];
+let videosData = [];   // array of YouTube URLs
 
 // ─── Init ──────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
@@ -45,6 +46,8 @@ function setupButtonListeners() {
     document.getElementById('btn-choose-portfolio').addEventListener('click', () => document.getElementById('portfolio-input').click());
     document.getElementById('portfolio-input').addEventListener('change', e => handlePortfolioFiles(e.target.files));
     document.getElementById('btn-save-portfolio').addEventListener('click', savePortfolio);
+    document.getElementById('btn-add-video').addEventListener('click', () => addVideoRow());
+    document.getElementById('btn-save-videos').addEventListener('click', saveVideos);
     document.getElementById('btn-add-couple').addEventListener('click', addCoupleRow);
     document.getElementById('btn-save-couples').addEventListener('click', saveCouples);
     document.getElementById('btn-add-testimonial').addEventListener('click', addTestimonialRow);
@@ -63,9 +66,9 @@ function setupPortfolioDrop() {
 
 // ─── Load All Data ─────────────────────────────────────────────────────────
 async function loadAllData() {
-    const [logo, hero, srv, port, coup, test, about, contact] = await Promise.all([
+    const [logo, hero, srv, port, vids, coup, test, about, contact] = await Promise.all([
         dbGet('logo'), dbGet('hero'), dbGet('services'), dbGet('portfolio'),
-        dbGet('couples'), dbGet('testimonials'), dbGet('about'), dbGet('contact')
+        dbGet('videos'), dbGet('couples'), dbGet('testimonials'), dbGet('about'), dbGet('contact')
     ]);
 
     if (logo) document.getElementById('logo-text').value = logo.text || '';
@@ -79,6 +82,9 @@ async function loadAllData() {
 
     portfolioData = port ? port.list || [] : [];
     displayPortfolioPreview();
+
+    videosData = vids ? vids.list || [] : [];
+    videosData.length > 0 ? displayVideos() : addVideoRow();
 
     couplesData = coup ? coup.list || [] : [];
     couplesData.length > 0 ? displayCouples() : addCoupleRow();
@@ -214,6 +220,35 @@ async function savePortfolio() {
     showToast('Saving portfolio…');
     await dbSet('portfolio', { list: portfolioData });
     msg('portfolio-message', 'Portfolio saved!');
+    hideToast();
+}
+
+// ─── Videos ─────────────────────────────────────────────────────────────────
+function addVideoRow(url = '') {
+    const container = document.getElementById('videos-container');
+    const item = document.createElement('div');
+    item.className = 'video-item';
+    item.style.cssText = 'display:flex;gap:1rem;align-items:center;margin-bottom:1rem;';
+    item.innerHTML = `
+        <input type="url" class="vid-url" value="${escHtml(url)}" placeholder="https://www.youtube.com/watch?v=..." style="flex:1;padding:10px;border:1px solid #444;background:#111;color:#fff;border-radius:4px;">
+        <button class="btn-remove" type="button" style="padding:8px 16px;">Remove</button>
+    `;
+    item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
+    container.appendChild(item);
+}
+
+function displayVideos() {
+    document.getElementById('videos-container').innerHTML = '';
+    videosData.forEach(url => addVideoRow(url));
+}
+
+async function saveVideos() {
+    showToast('Saving videos…');
+    videosData = Array.from(document.querySelectorAll('.vid-url'))
+        .map(el => el.value.trim())
+        .filter(url => url.length > 0);
+    await dbSet('videos', { list: videosData });
+    msg('videos-message', 'Videos saved!');
     hideToast();
 }
 

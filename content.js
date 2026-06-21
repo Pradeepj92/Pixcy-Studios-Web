@@ -14,6 +14,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         loadHero(),
         loadServices(),
         loadPortfolio(),
+        loadVideos(),
         loadCouples(),
         loadTestimonials(),
         loadAbout(),
@@ -85,6 +86,30 @@ async function loadPortfolio() {
             <img src="${img}" alt="Portfolio ${i + 1}" loading="lazy">
         </div>
     `).join('');
+}
+
+async function loadVideos() {
+    const data = await dbGet('videos');
+    const videos = data?.list || [];
+    const grid = document.getElementById('videos-grid');
+    if (!grid) return;
+
+    if (videos.length === 0) {
+        grid.innerHTML = '<div class="videos-placeholder">No videos added yet. Add YouTube video URLs in your admin panel.</div>';
+        return;
+    }
+
+    grid.innerHTML = videos.map(url => {
+        // Convert any youtube URL format to embed URL
+        let embedUrl = url;
+        const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([-\w]+)/);
+        if (match) embedUrl = `https://www.youtube.com/embed/${match[1]}`;
+        return `
+            <div class="video-embed">
+                <iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+        `;
+    }).join('');
 }
 
 async function loadCouples() {
@@ -190,12 +215,18 @@ async function loadContact() {
         window.waNumber = contact.whatsapp;
     }
     if (contact.instagram) {
-        document.getElementById('instagram-link').href = contact.instagram;
-        document.getElementById('header-ig').href = contact.instagram;
+        const igUrl = contact.instagram;
+        ['instagram-link', 'header-ig', 'footer-ig'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.href = igUrl;
+        });
     }
     if (contact.youtube) {
-        document.getElementById('youtube-link').href = contact.youtube;
-        document.getElementById('header-yt').href = contact.youtube;
+        const ytUrl = contact.youtube;
+        ['youtube-link', 'header-yt', 'footer-yt', 'videos-yt-btn'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.href = ytUrl;
+        });
     }
 }
 
