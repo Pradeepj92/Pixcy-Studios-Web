@@ -7,19 +7,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function setupNavigation() {
     const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('.nav');
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinksContainer = document.querySelector('.nav-links');
+    const navLinks = document.querySelectorAll('.nav-links a');
 
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
-            nav.classList.toggle('active');
+            navLinksContainer.classList.toggle('active');
             menuToggle.classList.toggle('active');
         });
     }
 
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
-            nav.classList.remove('active');
+            navLinksContainer.classList.remove('active');
             if (menuToggle) menuToggle.classList.remove('active');
         });
     });

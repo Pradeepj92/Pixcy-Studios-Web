@@ -1145,10 +1145,22 @@ footer {
         padding: 0 1.5rem;
     }
     .videos-grid {
-        padding: 2rem 1.5rem;
-        column-count: 1;
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        padding: 2rem 1.5rem 4rem;
+        column-count: auto;
+        gap: 1rem;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .videos-grid::-webkit-scrollbar {
+        display: none;
     }
     .yt-card {
-        margin-bottom: 1.5rem;
+        flex: 0 0 85vw;
+        scroll-snap-align: center;
+        margin-bottom: 0;
     }
 }
