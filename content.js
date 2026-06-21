@@ -121,18 +121,21 @@ async function loadVideos() {
         if (!id) return '';
         const thumb = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
         const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+        
+        // Assign masonry aspect classes
+        const classes = ['wide', 'tall', 'square'];
+        const aspectClass = classes[i % classes.length];
+        
         return `
-            <div class="yt-card" onclick="openVideoModal('${embedUrl}')">
+            <div class="yt-card ${aspectClass}" onclick="openVideoModal('${embedUrl}')">
                 <div class="yt-thumb">
                     <img src="${thumb}" alt="Video ${i+1}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${id}/hqdefault.jpg'">
                     <div class="yt-overlay"></div>
                     <div class="yt-play-btn">
-                        <svg viewBox="0 0 68 48" width="56" height="40">
-                            <path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24S68 12.5 66.5 7.7z" fill="#ff0000"/>
-                            <path d="M27 34l18-10-18-10v20z" fill="white"/>
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
                         </svg>
                     </div>
-                    <div class="yt-duration-badge">▶ Watch</div>
                 </div>
             </div>`;
     }).join('');
@@ -188,10 +191,11 @@ async function loadTestimonials() {
     // Build infinite-loop carousel: duplicate cards for seamless loop
     const googleSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="google-icon"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>`;
 
-    const cards = testimonials.map((t) => {
+    window.currentTestimonials = testimonials; // Save for modal
+    const cards = testimonials.map((t, i) => {
         const initial = t.author ? t.author.charAt(0).toUpperCase() : 'G';
         return `
-            <div class="review-card">
+            <div class="review-card" onclick="openTestimonialModal(${i})">
                 <div class="review-card-top">
                     <div class="google-reviewer">
                         <div class="google-avatar">${initial}</div>
@@ -239,12 +243,29 @@ function startReviewCarousel() {
     }
 
     rafId = requestAnimationFrame(step);
-
-    // Pause on hover, resume on leave
-    const wrapper = track.parentElement;
-    wrapper.addEventListener('mouseenter', () => { paused = true; });
-    wrapper.addEventListener('mouseleave', () => { paused = false; });
 }
+
+window.openTestimonialModal = function(index) {
+    if (!window.currentTestimonials) return;
+    const t = window.currentTestimonials[index];
+    if (!t) return;
+    
+    const initial = t.author ? t.author.charAt(0).toUpperCase() : 'G';
+    document.getElementById('test-modal-avatar').textContent = initial;
+    document.getElementById('test-modal-name').textContent = t.author;
+    document.getElementById('test-modal-role').textContent = t.role || 'Google Review';
+    document.getElementById('test-modal-text').textContent = `"${t.text}"`;
+    
+    const modal = document.getElementById('testimonial-modal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+window.closeTestimonialModal = function() {
+    const modal = document.getElementById('testimonial-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+};
 
 async function loadAbout() {
     const data = await dbGet('about');
