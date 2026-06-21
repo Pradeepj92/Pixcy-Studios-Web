@@ -29,6 +29,16 @@ window.prevPhoto = prevPhoto;
 window.openCoupleModal = openCoupleModal;
 window.openCouplePhoto = openCouplePhoto;
 
+// Fisher-Yates shuffle
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
 async function loadBranding() {
     const data = await dbGet('logo');
     if (data && data.text) {
@@ -135,13 +145,16 @@ async function loadCouples() {
 
 async function loadTestimonials() {
     const data = await dbGet('testimonials');
-    const testimonials = data?.list || [];
+    const rawList = data?.list || [];
     const slider = document.getElementById('testimonials-slider');
 
-    if (testimonials.length === 0) {
+    if (rawList.length === 0) {
         slider.innerHTML = '<p style="text-align:center;color:var(--muted);padding:40px 0;">Testimonials coming soon...</p>';
         return;
     }
+
+    // Shuffle randomly every page load
+    const testimonials = shuffle(rawList);
 
     let html = testimonials.map((t, i) => {
         const initial = t.author ? t.author.charAt(0).toUpperCase() : 'G';
@@ -153,7 +166,7 @@ async function loadTestimonials() {
                         <div class="google-avatar">${initial}</div>
                         <div>
                             <div class="google-name">${t.author}</div>
-                            <div class="google-date">a month ago</div>
+                            <div class="google-date">${t.role || 'Google Review'}</div>
                         </div>
                     </div>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="google-icon">
@@ -216,16 +229,28 @@ async function loadContact() {
     }
     if (contact.instagram) {
         const igUrl = contact.instagram;
+        // Smart link: on mobile opens Instagram app, on desktop opens browser
+        const igSmartUrl = igUrl.includes('instagram.com/')
+            ? igUrl.replace('https://www.instagram.com/', 'https://instagram.com/')
+            : igUrl;
         ['instagram-link', 'header-ig', 'footer-ig'].forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.href = igUrl;
+            if (el) {
+                el.href = igSmartUrl;
+                el.setAttribute('target', '_blank');
+                el.setAttribute('rel', 'noopener noreferrer');
+            }
         });
     }
     if (contact.youtube) {
         const ytUrl = contact.youtube;
         ['youtube-link', 'header-yt', 'footer-yt', 'videos-yt-btn'].forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.href = ytUrl;
+            if (el) {
+                el.href = ytUrl;
+                el.setAttribute('target', '_blank');
+                el.setAttribute('rel', 'noopener noreferrer');
+            }
         });
     }
 }
