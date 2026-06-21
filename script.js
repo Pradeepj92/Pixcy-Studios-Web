@@ -28,11 +28,19 @@ function setupNavigation() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
+            
+            // If the href was dynamically updated to a real URL, let the browser handle it
+            if (!href.startsWith('#')) return; 
             if (href === '#') return;
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
-                window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+            
+            try {
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+                }
+            } catch (err) {
+                // Ignore DOMException for invalid selectors
             }
         });
     });
