@@ -75,6 +75,9 @@ async function loadAllData() {
     if (hero) {
         document.getElementById('hero-title').value = hero.title || '';
         document.getElementById('hero-subtitle').value = hero.subtitle || '';
+        if (hero.image) {
+            document.getElementById('hero-bg-preview').innerHTML = `<img src="${hero.image}" style="max-width:300px;margin-top:8px;border-radius:4px;">`;
+        }
     }
 
     servicesData = srv ? srv.list || [] : [];
@@ -118,11 +121,21 @@ async function saveBranding() {
 
 // ─── Hero ──────────────────────────────────────────────────────────────────
 async function saveHero() {
+    showToast('Saving hero section…');
+    const existing = await dbGet('hero') || {};
+    let image = existing.image || '';
+    const fileInput = document.getElementById('hero-bg-image');
+    if (fileInput.files[0]) {
+        image = await uploadImage(fileInput.files[0]);
+        document.getElementById('hero-bg-preview').innerHTML = `<img src="${image}" style="max-width:300px;margin-top:8px;border-radius:4px;">`;
+    }
+    
     const data = {
         title: document.getElementById('hero-title').value.trim(),
-        subtitle: document.getElementById('hero-subtitle').value.trim()
+        subtitle: document.getElementById('hero-subtitle').value.trim(),
+        image: image
     };
-    showToast('Saving…');
+    
     await dbSet('hero', data);
     msg('hero-message', 'Hero section saved!');
     hideToast();

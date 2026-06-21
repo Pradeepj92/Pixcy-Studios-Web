@@ -54,6 +54,12 @@ async function loadHero() {
         document.getElementById('hero-title').innerHTML = `${titleParts.join(' ')} <span id="hero-title-span">${lastWord}</span>`;
         document.getElementById('hero-subtitle').textContent = data.subtitle || '';
     }
+    if (data && data.image) {
+        const heroImg = document.querySelector('.hero-img img');
+        if (heroImg) {
+            heroImg.src = data.image;
+        }
+    }
 }
 
 async function loadServices() {
