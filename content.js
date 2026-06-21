@@ -117,12 +117,26 @@ async function loadTestimonials() {
         return;
     }
 
-    let html = testimonials.map((t, i) => `
+    let html = testimonials.map((t, i) => {
+        const initial = t.author ? t.author.charAt(0).toUpperCase() : 'G';
+        return `
         <div class="testimonial-slide ${i === 0 ? 'active' : ''}" id="test-slide-${i}">
-            <p class="test-quote">"${t.text}"</p>
-            <div class="test-author">${t.author}</div>
+            <div class="google-review-card">
+                <div class="google-review-header">
+                    <div class="google-reviewer">
+                        <div class="google-avatar">${initial}</div>
+                        <div>
+                            <div class="google-name">${t.author}</div>
+                            <div class="google-date">a month ago</div>
+                        </div>
+                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="google-icon">
+                </div>
+                <div class="google-stars">★★★★★</div>
+                <div class="google-text">"${t.text}"</div>
+            </div>
         </div>
-    `).join('');
+    `}).join('');
 
     if (testimonials.length > 1) {
         html += `
