@@ -61,6 +61,7 @@ async function loadServices() {
     grid.innerHTML = services.map((s, i) => `
         <div class="svc-row">
             <div class="svc-num">0${i + 1}</div>
+            ${s.image ? `<div class="svc-img-container"><img src="${s.image}" alt="${s.name}" loading="lazy"></div>` : `<div class="svc-img-container"></div>`}
             <div class="svc-info">
                 <div class="svc-name">${s.name}</div>
                 <div class="svc-desc">${s.description}</div>
@@ -186,10 +187,31 @@ async function loadContact() {
         const waFloat = document.getElementById('whatsapp-float');
         waFloat.href = `https://wa.me/${contact.whatsapp}`;
         waFloat.style.display = 'flex';
+        window.waNumber = contact.whatsapp;
     }
-    if (contact.instagram) document.getElementById('instagram-link').href = contact.instagram;
-    if (contact.youtube) document.getElementById('youtube-link').href = contact.youtube;
+    if (contact.instagram) {
+        document.getElementById('instagram-link').href = contact.instagram;
+        document.getElementById('header-ig').href = contact.instagram;
+    }
+    if (contact.youtube) {
+        document.getElementById('youtube-link').href = contact.youtube;
+        document.getElementById('header-yt').href = contact.youtube;
+    }
 }
+
+window.submitToWhatsApp = function(event) {
+    event.preventDefault();
+    const name = document.getElementById('wa-name').value;
+    const email = document.getElementById('wa-email').value;
+    const phone = document.getElementById('wa-phone').value;
+    const service = document.getElementById('wa-service').value;
+    const msg = document.getElementById('wa-msg').value;
+    
+    const text = `Hello Pixcy Studios!%0A%0A*New Inquiry from Website*%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Email:* ${email}%0A*Service Interested:* ${service}%0A*Details:* ${msg}`;
+    const waNumber = window.waNumber || '919876543210';
+    
+    window.open(`https://wa.me/${waNumber}?text=${text}`, '_blank');
+};
 
 // ─── Lightbox ──────────────────────────────────────────────────────────────
 function openLightbox(index) {
