@@ -3,8 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap');
 
 :root {
-    --bg: #fcfbf9;
-    --bg-alt: #f5f3ef;
+    --bg: #ffffff;
+    --bg-alt: #f8f9fa; /* Light 10% grey */
+    --bg-pastel-1: #fdfbf7; /* Light warm cream */
+    --bg-pastel-2: #f2f5f4; /* Light sage */
+    --bg-nav: rgba(248, 249, 250, 0.95); /* 10% grey for header tabs */
     --text: #2a2725;
     --muted: #7a7775;
     --gold: #c9a96e;
@@ -40,7 +43,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 2rem 4rem;
-    background: rgba(252, 251, 249, 0.95);
+    background: var(--bg-nav);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--gold-light);
     transition: all 0.3s;
@@ -126,6 +129,7 @@ nav {
     padding: 0 4rem;
     overflow: hidden;
     background: var(--bg);
+    max-width: none;
 }
 
 .hero-content {
@@ -209,9 +213,21 @@ nav {
     color: #fff;
 }
 
+/* --- PORTFOLIO --- */
+.portfolio-wrapper {
+    background: var(--bg-pastel-1);
+    padding: 8rem 0;
+}
+
+.portfolio {
+    padding: 0 6rem;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
 /* --- COMMON SECTIONS --- */
 section {
-    padding: 8rem 6rem;
+    padding: 0 6rem;
     max-width: 1800px;
     margin: 0 auto;
 }
@@ -584,7 +600,7 @@ section {
 
 /* --- CONTACT --- */
 .contact-wrapper {
-    background: var(--bg-alt);
+    background: var(--bg-pastel-2);
     padding: 8rem 6rem;
 }
 
@@ -831,7 +847,7 @@ section {
 
 /* --- VIDEOS SECTION --- */
 .videos-wrapper {
-    background: var(--bg);
+    background: var(--bg-alt);
     padding: 8rem 0;
     overflow: hidden;
 }
