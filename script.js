@@ -1,4 +1,4 @@
-// Main scripts - navigation, forms, modals
+// Main scripts - navigation, forms
 document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
     setupModals();
@@ -29,14 +29,10 @@ function setupNavigation() {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             if (href === '#') return;
-            
             e.preventDefault();
             const target = document.querySelector(href);
             if (target) {
-                window.scrollTo({
-                    top: target.offsetTop - 80,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
             }
         });
     });
@@ -45,89 +41,58 @@ function setupNavigation() {
     window.addEventListener('scroll', () => {
         let current = '';
         document.querySelectorAll('section[id]').forEach(section => {
-            const sectionTop = section.offsetTop;
-            if (window.pageYOffset >= sectionTop - 150) {
+            if (window.pageYOffset >= section.offsetTop - 150) {
                 current = section.getAttribute('id');
             }
         });
-
         navLinks.forEach(link => {
             link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
+            if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
         });
     });
 }
 
 function setupModals() {
-    // Lightbox
     const lightbox = document.getElementById('lightbox');
-    
-    lightbox.querySelector('.lightbox-close').onclick = () => {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-    };
 
-    lightbox.querySelector('.lightbox-prev').onclick = () => {
-        currentLightboxIndex = (currentLightboxIndex - 1 + portfolioImages.length) % portfolioImages.length;
-        updateLightbox();
-    };
+    // Close lightbox
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
 
-    lightbox.querySelector('.lightbox-next').onclick = () => {
-        currentLightboxIndex = (currentLightboxIndex + 1) % portfolioImages.length;
-        updateLightbox();
-    };
+    // Prev / Next — delegate to functions exposed by content.js
+    lightbox.querySelector('.lightbox-prev').addEventListener('click', () => window.prevPhoto && window.prevPhoto());
+    lightbox.querySelector('.lightbox-next').addEventListener('click', () => window.nextPhoto && window.nextPhoto());
 
-    lightbox.onclick = (e) => {
-        if (e.target === lightbox) {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    };
-
-    // Couple modal
+    // Couple modal close
     const coupleModal = document.getElementById('couple-modal');
-    
-    coupleModal.querySelector('.modal-close').onclick = () => {
-        coupleModal.classList.remove('active');
-        document.body.style.overflow = '';
-    };
-
-    coupleModal.onclick = (e) => {
-        if (e.target === coupleModal) {
-            coupleModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    };
+    coupleModal.querySelector('.modal-close').addEventListener('click', closeCoupleModal);
+    coupleModal.addEventListener('click', e => { if (e.target === coupleModal) closeCoupleModal(); });
 
     // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
         if (lightbox.classList.contains('active')) {
-            if (e.key === 'Escape') {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            if (e.key === 'ArrowLeft') lightbox.querySelector('.lightbox-prev').click();
-            if (e.key === 'ArrowRight') lightbox.querySelector('.lightbox-next').click();
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') window.prevPhoto && window.prevPhoto();
+            if (e.key === 'ArrowRight') window.nextPhoto && window.nextPhoto();
         }
+        if (coupleModal.classList.contains('active') && e.key === 'Escape') closeCoupleModal();
     });
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function closeCoupleModal() {
+    document.getElementById('couple-modal').classList.remove('active');
+    document.body.style.overflow = '';
 }
 
 function setupForms() {
     const form = document.getElementById('contact-form');
-    
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', e => {
         e.preventDefault();
-        
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        
-        // Save to localStorage
-        const enquiries = JSON.parse(localStorage.getItem('pixcy_enquiries') || '[]');
-        enquiries.push({ ...data, timestamp: new Date().toISOString() });
-        localStorage.setItem('pixcy_enquiries', JSON.stringify(enquiries));
-        
         alert('Thank you! We will contact you soon.');
         form.reset();
     });

@@ -1,16 +1,31 @@
-// Admin Panel JavaScript
+// Admin Panel — Pixcy Studios
+// Uses: Cloudinary for images, Supabase for all text content
+
+import { dbGet, dbSet, uploadImage } from './config.js';
+
+// ─── State ─────────────────────────────────────────────────────────────────
 let servicesData = [];
-let portfolioData = [];
+let portfolioData = [];   // array of Cloudinary URLs
 let couplesData = [];
 let testimonialsData = [];
 
-window.addEventListener('DOMContentLoaded', () => {
-    loadAllData();
-    setupTabSwitching();
-    setupFileUploads();
+// ─── Init ──────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+    showToast('Loading data…');
+    try {
+        await loadAllData();
+    } catch (e) {
+        console.error(e);
+        alert('⚠️ Could not load data. Check console for details.');
+    }
+    hideToast();
+    setupTabs();
+    setupPortfolioDrop();
+    setupButtonListeners();
 });
 
-function setupTabSwitching() {
+// ─── Tab Switching ─────────────────────────────────────────────────────────
+function setupTabs() {
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -21,429 +36,342 @@ function setupTabSwitching() {
     });
 }
 
-function setupFileUploads() {
-    const portfolioDrop = document.getElementById('portfolio-drop');
-    const portfolioInput = document.getElementById('portfolio-input');
-
-    portfolioDrop.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        portfolioDrop.style.background = 'rgba(212, 175, 55, 0.1)';
-    });
-
-    portfolioDrop.addEventListener('dragleave', () => {
-        portfolioDrop.style.background = '';
-    });
-
-    portfolioDrop.addEventListener('drop', (e) => {
-        e.preventDefault();
-        portfolioDrop.style.background = '';
-        handlePortfolioFiles(e.dataTransfer.files);
-    });
-
-    portfolioInput.addEventListener('change', (e) => {
-        handlePortfolioFiles(e.target.files);
-    });
+// ─── Button Listeners ─────────────────────────────────────────────────────
+function setupButtonListeners() {
+    document.getElementById('btn-save-branding').addEventListener('click', saveBranding);
+    document.getElementById('btn-save-hero').addEventListener('click', saveHero);
+    document.getElementById('btn-add-service').addEventListener('click', addServiceRow);
+    document.getElementById('btn-save-services').addEventListener('click', saveServices);
+    document.getElementById('btn-choose-portfolio').addEventListener('click', () => document.getElementById('portfolio-input').click());
+    document.getElementById('portfolio-input').addEventListener('change', e => handlePortfolioFiles(e.target.files));
+    document.getElementById('btn-save-portfolio').addEventListener('click', savePortfolio);
+    document.getElementById('btn-add-couple').addEventListener('click', addCoupleRow);
+    document.getElementById('btn-save-couples').addEventListener('click', saveCouples);
+    document.getElementById('btn-add-testimonial').addEventListener('click', addTestimonialRow);
+    document.getElementById('btn-save-testimonials').addEventListener('click', saveTestimonials);
+    document.getElementById('btn-save-about').addEventListener('click', saveAbout);
+    document.getElementById('btn-save-contact').addEventListener('click', saveContact);
 }
 
-function loadAllData() {
-    const savedData = {
-        logo: localStorage.getItem('pixcy_logo'),
-        hero: JSON.parse(localStorage.getItem('pixcy_hero') || '{}'),
-        services: JSON.parse(localStorage.getItem('pixcy_services') || '[]'),
-        portfolio: JSON.parse(localStorage.getItem('pixcy_portfolio') || '[]'),
-        couples: JSON.parse(localStorage.getItem('pixcy_couples') || '[]'),
-        testimonials: JSON.parse(localStorage.getItem('pixcy_testimonials') || '[]'),
-        about: JSON.parse(localStorage.getItem('pixcy_about') || '{}'),
-        contact: JSON.parse(localStorage.getItem('pixcy_contact') || '{}')
-    };
+// ─── Portfolio Drop Zone ───────────────────────────────────────────────────
+function setupPortfolioDrop() {
+    const drop = document.getElementById('portfolio-drop');
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.style.background = 'rgba(212,175,55,0.12)'; });
+    drop.addEventListener('dragleave', () => { drop.style.background = ''; });
+    drop.addEventListener('drop', e => { e.preventDefault(); drop.style.background = ''; handlePortfolioFiles(e.dataTransfer.files); });
+}
 
-    // Load logo
-    if (savedData.logo) {
-        document.getElementById('logo-text').value = savedData.logo;
+// ─── Load All Data ─────────────────────────────────────────────────────────
+async function loadAllData() {
+    const [logo, hero, srv, port, coup, test, about, contact] = await Promise.all([
+        dbGet('logo'), dbGet('hero'), dbGet('services'), dbGet('portfolio'),
+        dbGet('couples'), dbGet('testimonials'), dbGet('about'), dbGet('contact')
+    ]);
+
+    if (logo) document.getElementById('logo-text').value = logo.text || '';
+    if (hero) {
+        document.getElementById('hero-title').value = hero.title || '';
+        document.getElementById('hero-subtitle').value = hero.subtitle || '';
     }
 
-    // Load hero
-    if (savedData.hero.title) {
-        document.getElementById('hero-title').value = savedData.hero.title;
-        document.getElementById('hero-subtitle').value = savedData.hero.subtitle;
-    }
+    servicesData = srv ? srv.list || [] : [];
+    servicesData.length > 0 ? displayServices() : addServiceRow();
 
-    // Load services
-    servicesData = savedData.services;
-    if (servicesData.length > 0) {
-        displayServices();
-    } else {
-        addService(); // Add one empty service
-    }
-
-    // Load portfolio
-    portfolioData = savedData.portfolio;
+    portfolioData = port ? port.list || [] : [];
     displayPortfolioPreview();
 
-    // Load couples
-    couplesData = savedData.couples;
-    if (couplesData.length > 0) {
-        displayCouples();
-    } else {
-        addCouple();
-    }
+    couplesData = coup ? coup.list || [] : [];
+    couplesData.length > 0 ? displayCouples() : addCoupleRow();
 
-    // Load testimonials
-    testimonialsData = savedData.testimonials;
-    if (testimonialsData.length > 0) {
-        displayTestimonials();
-    } else {
-        addTestimonial();
-    }
+    testimonialsData = test ? test.list || [] : [];
+    testimonialsData.length > 0 ? displayTestimonials() : addTestimonialRow();
 
-    // Load about
-    if (savedData.about.title) {
-        document.getElementById('about-title').value = savedData.about.title;
-        document.getElementById('about-text').value = savedData.about.text;
+    if (about) {
+        document.getElementById('about-title').value = about.title || '';
+        document.getElementById('about-text').value = about.text || '';
+        if (about.image) document.getElementById('about-preview').innerHTML = `<img src="${about.image}" style="max-width:200px;margin-top:8px;border-radius:4px;">`;
     }
-
-    // Load contact
-    if (savedData.contact.location) {
-        document.getElementById('contact-location').value = savedData.contact.location;
-        document.getElementById('contact-email').value = savedData.contact.email;
-        document.getElementById('contact-phone').value = savedData.contact.phone;
-        document.getElementById('whatsapp-number').value = savedData.contact.whatsapp || '';
-        document.getElementById('instagram-url').value = savedData.contact.instagram || '';
-        document.getElementById('youtube-url').value = savedData.contact.youtube || '';
+    if (contact) {
+        document.getElementById('contact-location').value = contact.location || '';
+        document.getElementById('contact-email').value = contact.email || '';
+        document.getElementById('contact-phone').value = contact.phone || '';
+        document.getElementById('whatsapp-number').value = contact.whatsapp || '';
+        document.getElementById('instagram-url').value = contact.instagram || '';
+        document.getElementById('youtube-url').value = contact.youtube || '';
     }
 }
 
-// Branding
-function saveBranding() {
-    const logoText = document.getElementById('logo-text').value;
-    localStorage.setItem('pixcy_logo', logoText);
-    showMessage('branding-message', 'Branding saved!');
+// ─── Branding ──────────────────────────────────────────────────────────────
+async function saveBranding() {
+    const text = document.getElementById('logo-text').value.trim();
+    showToast('Saving…');
+    await dbSet('logo', { text });
+    msg('branding-message', 'Branding saved!');
+    hideToast();
 }
 
-// Hero
-function saveHero() {
-    const hero = {
-        title: document.getElementById('hero-title').value,
-        subtitle: document.getElementById('hero-subtitle').value
+// ─── Hero ──────────────────────────────────────────────────────────────────
+async function saveHero() {
+    const data = {
+        title: document.getElementById('hero-title').value.trim(),
+        subtitle: document.getElementById('hero-subtitle').value.trim()
     };
-    localStorage.setItem('pixcy_hero', JSON.stringify(hero));
-    showMessage('hero-message', 'Hero section saved!');
+    showToast('Saving…');
+    await dbSet('hero', data);
+    msg('hero-message', 'Hero section saved!');
+    hideToast();
 }
 
-// Services
-function addService() {
+// ─── Services ─────────────────────────────────────────────────────────────
+function addServiceRow(service = { name: '', description: '', image: '' }) {
     const container = document.getElementById('services-container');
-    const index = servicesData.length;
-    servicesData.push({ name: '', description: '', image: '' });
-
+    const idx = container.children.length;
     const item = document.createElement('div');
     item.className = 'service-item';
+    item.dataset.idx = idx;
     item.innerHTML = `
         <div class="form-group">
             <label>Service Name</label>
-            <input type="text" class="service-name" placeholder="Wedding Photography">
+            <input type="text" class="svc-name" value="${escHtml(service.name)}" placeholder="Wedding Photography">
         </div>
         <div class="form-group">
             <label>Description</label>
-            <textarea class="service-desc" rows="3" placeholder="Beautiful coverage of your special day..."></textarea>
+            <textarea class="svc-desc" rows="3" placeholder="Description...">${escHtml(service.description)}</textarea>
         </div>
         <div class="form-group">
             <label>Service Image</label>
-            <input type="file" class="service-image" accept="image/*" data-index="${index}">
-            <div class="preview service-preview-${index}"></div>
+            <input type="file" class="svc-img-input" accept="image/*">
+            <div class="svc-img-preview">${service.image ? `<img src="${service.image}" style="max-width:200px;margin-top:8px;border-radius:4px;">` : ''}</div>
         </div>
+        <button class="btn-remove" type="button">Remove Service</button>
+        <hr style="border-color:#333;margin:16px 0;">
     `;
+    item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
     container.appendChild(item);
-
-    item.querySelector('.service-image').addEventListener('change', function(e) {
-        handleServiceImage(e.target.files[0], this.dataset.index);
-    });
-}
-
-function handleServiceImage(file, index) {
-    if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            servicesData[index].image = e.target.result;
-            document.querySelector(`.service-preview-${index}`).innerHTML = 
-                `<img src="${e.target.result}" style="max-width: 200px;">`;
-        };
-        reader.readAsDataURL(file);
-    }
 }
 
 function displayServices() {
-    const container = document.getElementById('services-container');
-    container.innerHTML = '';
-    servicesData.forEach((service, index) => {
-        const item = document.createElement('div');
-        item.className = 'service-item';
-        item.innerHTML = `
-            <div class="form-group">
-                <label>Service Name</label>
-                <input type="text" class="service-name" value="${service.name}" placeholder="Wedding Photography">
-            </div>
-            <div class="form-group">
-                <label>Description</label>
-                <textarea class="service-desc" rows="3" placeholder="Description...">${service.description}</textarea>
-            </div>
-            <div class="form-group">
-                <label>Service Image</label>
-                <input type="file" class="service-image" accept="image/*" data-index="${index}">
-                <div class="preview service-preview-${index}">
-                    ${service.image ? `<img src="${service.image}" style="max-width: 200px;">` : ''}
-                </div>
-            </div>
-        `;
-        container.appendChild(item);
-
-        item.querySelector('.service-image').addEventListener('change', function(e) {
-            handleServiceImage(e.target.files[0], this.dataset.index);
-        });
-    });
+    document.getElementById('services-container').innerHTML = '';
+    servicesData.forEach(s => addServiceRow(s));
 }
 
-function saveServices() {
-    const names = document.querySelectorAll('.service-name');
-    const descs = document.querySelectorAll('.service-desc');
-
-    servicesData = Array.from(names).map((input, i) => ({
-        name: input.value,
-        description: descs[i].value,
-        image: servicesData[i]?.image || ''
-    })).filter(s => s.name);
-
-    localStorage.setItem('pixcy_services', JSON.stringify(servicesData));
-    showMessage('services-message', 'Services saved!');
-}
-
-// Portfolio
-function handlePortfolioFiles(files) {
-    Array.from(files).forEach(file => {
-        if (file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                portfolioData.push(e.target.result);
-                displayPortfolioPreview();
-            };
-            reader.readAsDataURL(file);
+async function saveServices() {
+    showToast('Uploading images & saving services…');
+    const items = document.querySelectorAll('.service-item');
+    const updated = [];
+    for (const item of items) {
+        const name = item.querySelector('.svc-name').value.trim();
+        if (!name) continue;
+        const desc = item.querySelector('.svc-desc').value.trim();
+        const fileInput = item.querySelector('.svc-img-input');
+        const idx = parseInt(item.dataset.idx);
+        let image = servicesData[idx]?.image || '';
+        if (fileInput.files[0]) {
+            image = await uploadImage(fileInput.files[0]);
         }
-    });
+        updated.push({ name, description: desc, image });
+    }
+    servicesData = updated;
+    await dbSet('services', { list: servicesData });
+    displayServices();
+    msg('services-message', 'Services saved!');
+    hideToast();
+}
+
+// ─── Portfolio ─────────────────────────────────────────────────────────────
+async function handlePortfolioFiles(files) {
+    if (!files.length) return;
+    showToast(`Uploading ${files.length} photo(s) to Cloudinary…`);
+    for (const file of files) {
+        const url = await uploadImage(file);
+        portfolioData.push(url);
+    }
+    displayPortfolioPreview();
+    await dbSet('portfolio', { list: portfolioData });
+    msg('portfolio-message', `${files.length} photo(s) uploaded & saved!`);
+    hideToast();
 }
 
 function displayPortfolioPreview() {
     const preview = document.getElementById('portfolio-preview');
     preview.innerHTML = '';
-    portfolioData.forEach((img, index) => {
+    portfolioData.forEach((url, i) => {
         const item = document.createElement('div');
         item.className = 'preview-item';
         item.innerHTML = `
-            <img src="${img}">
-            <button class="preview-remove" onclick="removePortfolio(${index})">&times;</button>
+            <img src="${url}" loading="lazy">
+            <button class="preview-remove" title="Remove">&times;</button>
         `;
+        item.querySelector('.preview-remove').addEventListener('click', async () => {
+            portfolioData.splice(i, 1);
+            displayPortfolioPreview();
+        });
         preview.appendChild(item);
     });
 }
 
-function removePortfolio(index) {
-    portfolioData.splice(index, 1);
-    displayPortfolioPreview();
+async function savePortfolio() {
+    showToast('Saving portfolio…');
+    await dbSet('portfolio', { list: portfolioData });
+    msg('portfolio-message', 'Portfolio saved!');
+    hideToast();
 }
 
-function savePortfolio() {
-    localStorage.setItem('pixcy_portfolio', JSON.stringify(portfolioData));
-    showMessage('portfolio-message', 'Portfolio saved!');
-}
-
-// Couples
-function addCouple() {
+// ─── Couples ───────────────────────────────────────────────────────────────
+function addCoupleRow(couple = { name: '', cover: '', photos: [] }) {
     const container = document.getElementById('couples-container');
-    const index = couplesData.length;
-    couplesData.push({ name: '', cover: '', photos: [] });
-
+    const idx = container.children.length;
     const item = document.createElement('div');
     item.className = 'couple-item';
+    item.dataset.idx = idx;
     item.innerHTML = `
         <div class="form-group">
             <label>Couple Name</label>
-            <input type="text" class="couple-name" placeholder="Priya & Rahul">
+            <input type="text" class="cpl-name" value="${escHtml(couple.name)}" placeholder="Priya & Rahul">
         </div>
         <div class="form-group">
             <label>Cover Photo</label>
-            <input type="file" class="couple-cover" accept="image/*" data-index="${index}">
-            <div class="preview couple-cover-${index}"></div>
+            <input type="file" class="cpl-cover-input" accept="image/*">
+            <div class="cpl-cover-preview">${couple.cover ? `<img src="${couple.cover}" style="max-width:200px;margin-top:8px;border-radius:4px;">` : ''}</div>
         </div>
         <div class="form-group">
-            <label>Album Photos</label>
-            <input type="file" class="couple-photos" multiple accept="image/*" data-index="${index}">
-            <div class="preview-grid couple-photos-${index}"></div>
+            <label>Album Photos (select multiple)</label>
+            <input type="file" class="cpl-photos-input" multiple accept="image/*">
+            <div class="preview-grid cpl-photos-preview">
+                ${(couple.photos || []).map(p => `<div class="preview-item"><img src="${p}" loading="lazy"></div>`).join('')}
+            </div>
         </div>
+        <button class="btn-remove" type="button">Remove Couple</button>
+        <hr style="border-color:#333;margin:16px 0;">
     `;
+    item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
     container.appendChild(item);
-
-    setupCoupleHandlers(item, index);
-}
-
-function setupCoupleHandlers(item, index) {
-    item.querySelector('.couple-cover').addEventListener('change', function(e) {
-        if (e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                couplesData[index].cover = ev.target.result;
-                document.querySelector(`.couple-cover-${index}`).innerHTML = 
-                    `<img src="${ev.target.result}" style="max-width: 200px;">`;
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        }
-    });
-
-    item.querySelector('.couple-photos').addEventListener('change', function(e) {
-        Array.from(e.target.files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                couplesData[index].photos.push(ev.target.result);
-                const grid = document.querySelector(`.couple-photos-${index}`);
-                const div = document.createElement('div');
-                div.className = 'preview-item';
-                div.innerHTML = `<img src="${ev.target.result}">`;
-                grid.appendChild(div);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
 }
 
 function displayCouples() {
-    const container = document.getElementById('couples-container');
-    container.innerHTML = '';
-    couplesData.forEach((couple, index) => {
-        const item = document.createElement('div');
-        item.className = 'couple-item';
-        item.innerHTML = `
-            <div class="form-group">
-                <label>Couple Name</label>
-                <input type="text" class="couple-name" value="${couple.name}">
-            </div>
-            <div class="form-group">
-                <label>Cover Photo</label>
-                <input type="file" class="couple-cover" accept="image/*" data-index="${index}">
-                <div class="preview couple-cover-${index}">
-                    ${couple.cover ? `<img src="${couple.cover}" style="max-width: 200px;">` : ''}
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Album Photos</label>
-                <input type="file" class="couple-photos" multiple accept="image/*" data-index="${index}">
-                <div class="preview-grid couple-photos-${index}">
-                    ${couple.photos.map(p => `<div class="preview-item"><img src="${p}"></div>`).join('')}
-                </div>
-            </div>
-        `;
-        container.appendChild(item);
-        setupCoupleHandlers(item, index);
-    });
+    document.getElementById('couples-container').innerHTML = '';
+    couplesData.forEach(c => addCoupleRow(c));
 }
 
-function saveCouples() {
-    const names = document.querySelectorAll('.couple-name');
-    couplesData.forEach((couple, i) => {
-        couple.name = names[i].value;
-    });
-    couplesData = couplesData.filter(c => c.name && c.cover);
-    localStorage.setItem('pixcy_couples', JSON.stringify(couplesData));
-    showMessage('couples-message', 'Couples saved!');
+async function saveCouples() {
+    showToast('Uploading photos & saving couples…');
+    const items = document.querySelectorAll('.couple-item');
+    const updated = [];
+    for (const item of items) {
+        const name = item.querySelector('.cpl-name').value.trim();
+        if (!name) continue;
+        const idx = parseInt(item.dataset.idx);
+
+        let cover = couplesData[idx]?.cover || '';
+        const coverInput = item.querySelector('.cpl-cover-input');
+        if (coverInput.files[0]) cover = await uploadImage(coverInput.files[0]);
+
+        let photos = [...(couplesData[idx]?.photos || [])];
+        const photosInput = item.querySelector('.cpl-photos-input');
+        for (const file of photosInput.files) {
+            photos.push(await uploadImage(file));
+        }
+
+        updated.push({ name, cover, photos });
+    }
+    couplesData = updated;
+    await dbSet('couples', { list: couplesData });
+    displayCouples();
+    msg('couples-message', 'Couples saved!');
+    hideToast();
 }
 
-// Testimonials
-function addTestimonial() {
+// ─── Testimonials ──────────────────────────────────────────────────────────
+function addTestimonialRow(t = { text: '', author: '', role: '' }) {
     const container = document.getElementById('testimonials-container');
-    testimonialsData.push({ text: '', author: '', role: '' });
-
     const item = document.createElement('div');
     item.className = 'testimonial-item';
     item.innerHTML = `
         <div class="form-group">
             <label>Testimonial Text</label>
-            <textarea class="testimonial-text" rows="4" placeholder="Amazing work! We loved our photos..."></textarea>
+            <textarea class="test-text" rows="4" placeholder="Amazing work! We loved our photos...">${escHtml(t.text)}</textarea>
         </div>
         <div class="form-group">
             <label>Client Name</label>
-            <input type="text" class="testimonial-author" placeholder="Priya & Rahul">
+            <input type="text" class="test-author" value="${escHtml(t.author)}" placeholder="Priya & Rahul">
         </div>
         <div class="form-group">
             <label>Event/Role (optional)</label>
-            <input type="text" class="testimonial-role" placeholder="Wedding - Dec 2023">
+            <input type="text" class="test-role" value="${escHtml(t.role)}" placeholder="Wedding - Dec 2023">
         </div>
+        <button class="btn-remove" type="button">Remove</button>
+        <hr style="border-color:#333;margin:16px 0;">
     `;
+    item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
     container.appendChild(item);
 }
 
 function displayTestimonials() {
-    const container = document.getElementById('testimonials-container');
-    container.innerHTML = '';
-    testimonialsData.forEach(testimonial => {
-        const item = document.createElement('div');
-        item.className = 'testimonial-item';
-        item.innerHTML = `
-            <div class="form-group">
-                <label>Testimonial Text</label>
-                <textarea class="testimonial-text" rows="4">${testimonial.text}</textarea>
-            </div>
-            <div class="form-group">
-                <label>Client Name</label>
-                <input type="text" class="testimonial-author" value="${testimonial.author}">
-            </div>
-            <div class="form-group">
-                <label>Event/Role</label>
-                <input type="text" class="testimonial-role" value="${testimonial.role}">
-            </div>
-        `;
-        container.appendChild(item);
-    });
+    document.getElementById('testimonials-container').innerHTML = '';
+    testimonialsData.forEach(t => addTestimonialRow(t));
 }
 
-function saveTestimonials() {
-    const texts = document.querySelectorAll('.testimonial-text');
-    const authors = document.querySelectorAll('.testimonial-author');
-    const roles = document.querySelectorAll('.testimonial-role');
-
-    testimonialsData = Array.from(texts).map((el, i) => ({
-        text: el.value,
-        author: authors[i].value,
-        role: roles[i].value
+async function saveTestimonials() {
+    showToast('Saving testimonials…');
+    testimonialsData = Array.from(document.querySelectorAll('.testimonial-item')).map(item => ({
+        text: item.querySelector('.test-text').value.trim(),
+        author: item.querySelector('.test-author').value.trim(),
+        role: item.querySelector('.test-role').value.trim()
     })).filter(t => t.text && t.author);
-
-    localStorage.setItem('pixcy_testimonials', JSON.stringify(testimonialsData));
-    showMessage('testimonials-message', 'Testimonials saved!');
+    await dbSet('testimonials', { list: testimonialsData });
+    msg('testimonials-message', 'Testimonials saved!');
+    hideToast();
 }
 
-// About
-function saveAbout() {
-    const about = {
-        title: document.getElementById('about-title').value,
-        text: document.getElementById('about-text').value
-    };
-    localStorage.setItem('pixcy_about', JSON.stringify(about));
-    showMessage('about-message', 'About section saved!');
+// ─── About ─────────────────────────────────────────────────────────────────
+async function saveAbout() {
+    showToast('Saving about section…');
+    const existing = await dbGet('about') || {};
+    let image = existing.image || '';
+    const fileInput = document.getElementById('about-image');
+    if (fileInput.files[0]) {
+        image = await uploadImage(fileInput.files[0]);
+        document.getElementById('about-preview').innerHTML = `<img src="${image}" style="max-width:200px;margin-top:8px;border-radius:4px;">`;
+    }
+    await dbSet('about', {
+        title: document.getElementById('about-title').value.trim(),
+        text: document.getElementById('about-text').value.trim(),
+        image
+    });
+    msg('about-message', 'About section saved!');
+    hideToast();
 }
 
-// Contact
-function saveContact() {
-    const contact = {
-        location: document.getElementById('contact-location').value,
-        email: document.getElementById('contact-email').value,
-        phone: document.getElementById('contact-phone').value,
-        whatsapp: document.getElementById('whatsapp-number').value,
-        instagram: document.getElementById('instagram-url').value,
-        youtube: document.getElementById('youtube-url').value
-    };
-    localStorage.setItem('pixcy_contact', JSON.stringify(contact));
-    showMessage('contact-message', 'Contact info saved!');
+// ─── Contact ───────────────────────────────────────────────────────────────
+async function saveContact() {
+    showToast('Saving contact info…');
+    await dbSet('contact', {
+        location: document.getElementById('contact-location').value.trim(),
+        email: document.getElementById('contact-email').value.trim(),
+        phone: document.getElementById('contact-phone').value.trim(),
+        whatsapp: document.getElementById('whatsapp-number').value.trim(),
+        instagram: document.getElementById('instagram-url').value.trim(),
+        youtube: document.getElementById('youtube-url').value.trim()
+    });
+    msg('contact-message', 'Contact info saved!');
+    hideToast();
 }
 
-function showMessage(id, text) {
-    const msg = document.getElementById(id);
-    msg.textContent = '✅ ' + text;
-    msg.className = 'message success';
-    setTimeout(() => msg.className = 'message', 3000);
+// ─── UI Helpers ─────────────────────────────────────────────────────────────
+function msg(id, text) {
+    const el = document.getElementById(id);
+    el.textContent = '✅ ' + text;
+    el.className = 'message success';
+    setTimeout(() => { el.textContent = ''; el.className = 'message'; }, 4000);
+}
+function showToast(text) {
+    const t = document.getElementById('upload-toast');
+    t.textContent = '⏳ ' + text;
+    t.style.display = 'block';
+}
+function hideToast() {
+    document.getElementById('upload-toast').style.display = 'none';
+}
+function escHtml(str) {
+    return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
