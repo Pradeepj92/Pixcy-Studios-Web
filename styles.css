@@ -4,10 +4,10 @@
 
 :root {
     --bg: #ffffff;
-    --bg-alt: #f8f9fa; /* Light 10% grey */
-    --bg-pastel-1: #fdfbf7; /* Light warm cream */
-    --bg-pastel-2: #f2f5f4; /* Light sage */
-    --bg-nav: rgba(248, 249, 250, 0.95); /* 10% grey for header tabs */
+    --bg-alt: #f2f2f2; /* Clear light grey */
+    --bg-pastel-1: #faf2e6; /* Soft blush/cream */
+    --bg-pastel-2: #e8ece9; /* Soft grey-green */
+    --bg-nav: rgba(230, 230, 230, 0.98); /* 20% grey for header tabs */
     --text: #2a2725;
     --muted: #7a7775;
     --gold: #c9a96e;
@@ -451,12 +451,12 @@ section {
 }
 
 .review-card {
-    width: clamp(280px, 80vw, 340px);
+    width: clamp(220px, 60vw, 280px);
     flex-shrink: 0;
     background: var(--bg);
     border: 1px solid var(--gold-light);
     border-radius: 10px;
-    padding: clamp(1.5rem, 5vw, 2rem);
+    padding: clamp(1.2rem, 4vw, 1.5rem);
     text-align: left;
     box-shadow: 0 8px 30px rgba(0,0,0,0.04);
     transition: transform 0.3s, box-shadow 0.3s;
@@ -536,8 +536,8 @@ section {
 }
 
 .google-text {
-    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
-    line-height: 1.6;
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+    line-height: 1.5;
     color: var(--text);
 }
 
