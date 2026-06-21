@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option B — Dark Botanical | Pixcy Studios Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--green:#0c1e0c;--green-mid:#142414;--green-light:#1e3a1e;--gold:#c9a96e;--cream:#f5f0e8;--muted:#7a9a7a;}
+body{font-family:'Montserrat',sans-serif;background:var(--green);color:var(--cream);overflow-x:hidden;}
+
+.design-label{position:fixed;top:0;left:0;right:0;background:var(--gold);color:#000;text-align:center;padding:10px;font-size:13px;font-weight:600;letter-spacing:2px;z-index:9999;}
+
+/* Botanical SVG decorations */
+.botanical-tl,.botanical-br{position:absolute;opacity:.18;pointer-events:none;}
+.botanical-tl{top:0;left:0;width:320px;}
+.botanical-br{bottom:0;right:0;width:280px;transform:rotate(180deg);}
+
+/* NAV */
+nav{position:fixed;top:36px;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 4rem;background:rgba(12,30,12,0.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,169,110,.15);}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;letter-spacing:4px;color:var(--gold);font-weight:600;font-style:italic;}
+.nav-links{display:flex;gap:2.5rem;}
+.nav-links a{color:var(--cream);text-decoration:none;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;opacity:.75;transition:.3s;}
+.nav-links a:hover{color:var(--gold);opacity:1;}
+
+/* HERO */
+.hero{height:100vh;margin-top:36px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80') center/cover;}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,30,12,.82),rgba(5,15,5,.65));}
+.hero-botanical{position:absolute;opacity:.25;}
+.hero-botanical.tl{top:60px;left:0;width:400px;}
+.hero-botanical.br{bottom:0;right:0;width:350px;transform:rotate(180deg);}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:950px;padding:2rem;}
+.hero-eyebrow{font-size:.68rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;display:block;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,7.5vw,7.5rem);font-weight:300;font-style:italic;color:var(--cream);line-height:1.08;margin-bottom:1.5rem;}
+.hero-ornament{display:flex;align-items:center;gap:1.5rem;justify-content:center;margin:2rem 0;}
+.ornament-line{flex:1;max-width:100px;height:1px;background:linear-gradient(to right,transparent,var(--gold));}
+.ornament-line.r{background:linear-gradient(to left,transparent,var(--gold));}
+.ornament-diamond{width:8px;height:8px;background:var(--gold);transform:rotate(45deg);}
+.hero-sub{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.65);margin-bottom:3rem;}
+.hero-btn{display:inline-block;padding:1rem 3rem;border:1px solid var(--gold);color:var(--gold);text-decoration:none;font-size:.75rem;letter-spacing:2.5px;text-transform:uppercase;transition:.4s;}
+.hero-btn:hover{background:var(--gold);color:var(--green);}
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.7rem;color:var(--gold);font-size:.65rem;letter-spacing:3px;text-transform:uppercase;}
+.scroll-line{width:1px;height:50px;background:linear-gradient(var(--gold),transparent);animation:scrollAnim 2s infinite;}
+@keyframes scrollAnim{0%,100%{opacity:0;transform:translateY(0);}50%{opacity:1;transform:translateY(15px);}}
+
+/* SERVICES */
+.services{background:var(--green-mid);padding:8rem 4rem;position:relative;overflow:hidden;}
+.services::before{content:'';position:absolute;top:0;right:0;width:350px;height:350px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M100 10 Q150 50 190 100 Q150 150 100 190 Q50 150 10 100 Q50 50 100 10Z' fill='none' stroke='%23c9a96e' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M100 30 Q140 60 170 100 Q140 140 100 170 Q60 140 30 100 Q60 60 100 30Z' fill='none' stroke='%23c9a96e' stroke-width='0.3' opacity='0.2'/%3E%3C/svg%3E") center/contain no-repeat;opacity:.3;}
+.section-label{display:block;font-size:.68rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;margin-bottom:5rem;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.svc-card{background:rgba(255,255,255,.03);border:1px solid rgba(201,169,110,.15);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:.4s;}
+.svc-card::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);opacity:0;transition:.4s;}
+.svc-card:hover{background:rgba(201,169,110,.05);transform:translateY(-6px);}
+.svc-card:hover::before{opacity:1;}
+.svc-leaf{font-size:2rem;margin-bottom:1.5rem;display:block;}
+.svc-num{font-family:'Cormorant Garamond',serif;font-size:4.5rem;font-weight:300;color:rgba(201,169,110,.12);line-height:1;position:absolute;top:1.5rem;right:2rem;}
+.svc-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold);margin-bottom:1rem;}
+.svc-desc{font-size:.84rem;color:var(--muted);line-height:1.9;}
+
+/* PORTFOLIO */
+.portfolio{padding:8rem 4rem;background:var(--green);}
+.portfolio-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem;}
+.portfolio-stagger{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto;gap:4px;}
+.p-item{overflow:hidden;position:relative;cursor:pointer;}
+.p-item img{width:100%;height:100%;object-fit:cover;filter:saturate(.8);transition:.6s;}
+.p-item:hover img{filter:saturate(1.1);transform:scale(1.05);}
+.p-item::after{content:'';position:absolute;inset:0;border:1px solid rgba(201,169,110,0);transition:.4s;}
+.p-item:hover::after{border-color:rgba(201,169,110,.4);}
+.p1{grid-column:1/8;height:500px;}
+.p2{grid-column:8/13;height:500px;}
+.p3{grid-column:1/5;height:360px;}
+.p4{grid-column:5/9;height:360px;}
+.p5{grid-column:9/13;height:360px;}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--green-mid);padding:8rem 4rem;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:4rem;}
+.review-card{background:rgba(255,255,255,.03);border:1px solid rgba(201,169,110,.15);padding:2.5rem;transition:.3s;border-radius:2px;position:relative;}
+.review-card:hover{transform:translateY(-5px);border-color:rgba(201,169,110,.4);background:rgba(201,169,110,.04);}
+.review-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.reviewer-info{display:flex;align-items:center;gap:1rem;}
+.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#7B5D2A);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:600;color:#000;flex-shrink:0;}
+.reviewer-name{font-size:.88rem;font-weight:500;color:var(--cream);}
+.review-date{font-size:.7rem;color:var(--muted);}
+.g-logo{font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,#4285f4,#ea4335,#fbbc04,#34a853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:Arial;}
+.stars{color:#fbbc04;font-size:.95rem;margin-bottom:1.2rem;letter-spacing:2px;}
+.review-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:rgba(245,240,232,.85);line-height:1.8;margin-bottom:1.5rem;}
+.review-via{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+
+/* ABOUT */
+.about{padding:8rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;background:var(--green);}
+.about-img img{width:100%;height:620px;object-fit:cover;filter:saturate(.9);}
+.about-text .section-title{margin-bottom:2.5rem;}
+.about-text p{font-size:.92rem;color:rgba(245,240,232,.7);line-height:2;margin-bottom:1.5rem;}
+.about-divider{width:60px;height:2px;background:linear-gradient(to right,var(--gold),transparent);margin:2rem 0;}
+.about-quote{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-style:italic;color:var(--gold);border-left:2px solid var(--gold);padding-left:1.5rem;margin:2rem 0;}
+
+footer{background:var(--green-mid);border-top:1px solid rgba(201,169,110,.12);padding:3rem 4rem;display:flex;justify-content:space-between;align-items:center;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;letter-spacing:3px;color:var(--gold);font-style:italic;}
+.footer-copy{font-size:.73rem;color:var(--muted);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="design-label">🅑 OPTION B — DARK BOTANICAL LUXURY (Forest Green + Gold) — Mockup Preview</div>
+
+<nav>
+  <div class="logo">Pixcy Studios</div>
+  <div class="nav-links">
+    <a href="#">Home</a><a href="#">Services</a><a href="#">Portfolio</a>
+    <a href="#">Testimonials</a><a href="#">About</a><a href="#">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Est. 2020 · Chennai · South India</span>
+    <h1 class="hero-title">Love Stories,<br>Beautifully Told</h1>
+    <div class="hero-ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line r"></div>
+    </div>
+    <p class="hero-sub">Wedding & Portrait Photography · South India</p>
+    <a href="#" class="hero-btn">Book Your Session</a>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<section class="services">
+  <span class="section-label">What We Do</span>
+  <h2 class="section-title">Our Services</h2>
+  <div class="services-grid">
+    <div class="svc-card"><span class="svc-leaf">🌿</span><div class="svc-num">01</div><div class="svc-name">Wedding Photography</div><p class="svc-desc">Candid and traditional coverage of your special day with cinematic precision and timeless artistry.</p></div>
+    <div class="svc-card"><span class="svc-leaf">🌸</span><div class="svc-num">02</div><div class="svc-name">Pre-Wedding Shoot</div><p class="svc-desc">Personalized sessions in dreamy locations — crafting a visual story that is uniquely yours.</p></div>
+    <div class="svc-card"><span class="svc-leaf">🌱</span><div class="svc-num">03</div><div class="svc-name">Maternity & Baby</div><p class="svc-desc">Graceful portraits celebrating new life and the joy of your growing family.</p></div>
+    <div class="svc-card"><span class="svc-leaf">🍃</span><div class="svc-num">04</div><div class="svc-name">Portrait & Events</div><p class="svc-desc">Professional photography for corporate events, birthdays, and personal milestones.</p></div>
+    <div class="svc-card"><span class="svc-leaf">🎬</span><div class="svc-num">05</div><div class="svc-name">Videography & Reels</div><p class="svc-desc">Cinematic wedding films and social media reels — films you will re-watch for years.</p></div>
+    <div class="svc-card"><span class="svc-leaf">🌺</span><div class="svc-num">06</div><div class="svc-name">Baby Showers</div><p class="svc-desc">Colourful joyful sessions celebrating the arrival of your little bundle of joy.</p></div>
+  </div>
+</section>
+
+<section class="portfolio">
+  <div class="portfolio-header">
+    <div><span class="section-label">Our Work</span><h2 class="section-title">Portfolio</h2></div>
+    <a href="#" style="color:var(--gold);text-decoration:none;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--gold);">View All →</a>
+  </div>
+  <div class="portfolio-stagger">
+    <div class="p-item p1"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=900&q=80" alt="Wedding"></div>
+    <div class="p-item p2"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=700&q=80" alt="Wedding"></div>
+    <div class="p-item p3"><img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&q=80" alt="Wedding"></div>
+    <div class="p-item p4"><img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80" alt="Wedding"></div>
+    <div class="p-item p5"><img src="https://images.unsplash.com/photo-1529636798458-92182e662485?w=600&q=80" alt="Wedding"></div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <span class="section-label">Client Love</span>
+  <h2 class="section-title">What Clients Say</h2>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-top"><div class="reviewer-info"><div class="avatar">A</div><div><div class="reviewer-name">Ananya & Vikram</div><div class="review-date">February 2025</div></div></div><div class="g-logo">G</div></div>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Pixcy Studios made our wedding day look like a Bollywood film! Every smile, every tear — Pradeep captured it all perfectly."</p>
+      <span class="review-via">via Google Reviews</span>
+    </div>
+    <div class="review-card">
+      <div class="review-top"><div class="reviewer-info"><div class="avatar" style="background:linear-gradient(135deg,#6B4F9A,#3B2570)">P</div><div><div class="reviewer-name">Priya & Karthik</div><div class="review-date">November 2024</div></div></div><div class="g-logo">G</div></div>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Our pre-wedding shoot was an experience we will never forget. The photos look like they belong in a magazine!"</p>
+      <span class="review-via">via Google Reviews</span>
+    </div>
+    <div class="review-card">
+      <div class="review-top"><div class="reviewer-info"><div class="avatar" style="background:linear-gradient(135deg,#1B5E20,#0a3d12)">M</div><div><div class="reviewer-name">Meera & Suresh</div><div class="review-date">March 2025</div></div></div><div class="g-logo">G</div></div>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"We booked for our maternity shoot and were completely amazed. The studio was beautiful and the photos breathtaking!"</p>
+      <span class="review-via">via Google Reviews</span>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="about-img"><img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80" alt="About"></div>
+  <div class="about-text">
+    <span class="section-label">Our Story</span>
+    <h2 class="section-title">About Pixcy Studios</h2>
+    <div class="about-divider"></div>
+    <div class="about-quote">"We don't just take photographs. We create heirlooms."</div>
+    <p>Founded by Pradeep Bernard, Pixcy Studios is a premier photography studio based in Chennai, specialising in capturing life's most precious moments with artistic excellence and genuine emotion.</p>
+    <p>We serve couples and families across South India, blending storytelling with modern cinematic techniques to create imagery that is timeless and deeply personal.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Pixcy Studios</div>
+  <div class="footer-copy">© 2025 Pixcy Studios by Pradeep Bernard · All Rights Reserved</div>
+</footer>
+</body>
+</html>
