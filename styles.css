@@ -435,12 +435,12 @@ section {
 }
 
 .review-card {
-    width: 380px;
+    width: clamp(280px, 80vw, 340px);
     flex-shrink: 0;
     background: var(--bg);
     border: 1px solid var(--gold-light);
     border-radius: 10px;
-    padding: 2.5rem;
+    padding: clamp(1.5rem, 5vw, 2rem);
     text-align: left;
     box-shadow: 0 8px 30px rgba(0,0,0,0.04);
     transition: transform 0.3s, box-shadow 0.3s;
@@ -520,7 +520,7 @@ section {
 }
 
 .google-text {
-    font-size: 1.05rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
     line-height: 1.6;
     color: var(--text);
 }
