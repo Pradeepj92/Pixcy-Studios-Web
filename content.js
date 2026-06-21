@@ -31,14 +31,16 @@ window.openCouplePhoto = openCouplePhoto;
 async function loadBranding() {
     const data = await dbGet('logo');
     if (data && data.text) {
-        document.getElementById('logo-display').textContent = data.text;
+        document.getElementById('logo-display').innerHTML = `${data.text.split(' ')[0]}<span>${data.text.split(' ').slice(1).join(' ')}</span>`;
     }
 }
 
 async function loadHero() {
     const data = await dbGet('hero');
     if (data && data.title) {
-        document.getElementById('hero-title').textContent = data.title;
+        const titleParts = data.title.split(' ');
+        const lastWord = titleParts.pop();
+        document.getElementById('hero-title').innerHTML = `${titleParts.join(' ')} <span id="hero-title-span">${lastWord}</span>`;
         document.getElementById('hero-subtitle').textContent = data.subtitle || '';
     }
 }
@@ -56,12 +58,12 @@ async function loadServices() {
     }
 
     const grid = document.getElementById('services-grid');
-    grid.innerHTML = services.map(s => `
-        <div class="service-card">
-            ${s.image ? `<img src="${s.image}" alt="${s.name}" class="service-image" loading="lazy">` : ''}
-            <div class="service-content">
-                <h3>${s.name}</h3>
-                <p>${s.description}</p>
+    grid.innerHTML = services.map((s, i) => `
+        <div class="svc-row">
+            <div class="svc-num">0${i + 1}</div>
+            <div class="svc-info">
+                <div class="svc-name">${s.name}</div>
+                <div class="svc-desc">${s.description}</div>
             </div>
         </div>
     `).join('');
@@ -73,14 +75,13 @@ async function loadPortfolio() {
     const grid = document.getElementById('portfolio-grid');
 
     if (portfolioImages.length === 0) {
-        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#888;padding:40px 0;">Photos coming soon...</p>';
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;">Photos coming soon...</p>';
         return;
     }
 
     grid.innerHTML = portfolioImages.map((img, i) => `
-        <div class="portfolio-item" onclick="openLightbox(${i})">
+        <div class="p-item ${i === 0 ? 'p1' : ''}" onclick="openLightbox(${i})">
             <img src="${img}" alt="Portfolio ${i + 1}" loading="lazy">
-            <div class="portfolio-overlay"></div>
         </div>
     `).join('');
 }
@@ -91,12 +92,12 @@ async function loadCouples() {
     const grid = document.getElementById('couples-grid');
 
     if (allCouples.length === 0) {
-        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#888;padding:40px 0;">Albums coming soon...</p>';
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;">Albums coming soon...</p>';
         return;
     }
 
     grid.innerHTML = allCouples.map((c, i) => `
-        <div class="couple-card" onclick="openCoupleModal(${i})">
+        <div class="p-item ${i === 0 ? 'p1' : ''}" onclick="openCoupleModal(${i})">
             <img src="${c.cover}" alt="${c.name}" loading="lazy">
             <div class="couple-info">
                 <h3 class="couple-name">${c.name}</h3>
@@ -112,18 +113,33 @@ async function loadTestimonials() {
     const slider = document.getElementById('testimonials-slider');
 
     if (testimonials.length === 0) {
-        slider.innerHTML = '<p style="text-align:center;color:#888;padding:40px 0;">Testimonials coming soon...</p>';
+        slider.innerHTML = '<p style="text-align:center;color:var(--muted);padding:40px 0;">Testimonials coming soon...</p>';
         return;
     }
 
-    slider.innerHTML = testimonials.map(t => `
-        <div class="testimonial-card">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">"${t.text}"</p>
-            <div class="testimonial-author">${t.author}</div>
-            ${t.role ? `<div class="testimonial-role">${t.role}</div>` : ''}
+    let html = testimonials.map((t, i) => `
+        <div class="testimonial-slide ${i === 0 ? 'active' : ''}" id="test-slide-${i}">
+            <p class="test-quote">"${t.text}"</p>
+            <div class="test-author">${t.author}</div>
         </div>
     `).join('');
+
+    if (testimonials.length > 1) {
+        html += `
+            <div class="test-nav">
+                ${testimonials.map((_, i) => `<div class="test-dot ${i === 0 ? 'active' : ''}" onclick="showTestimonial(${i})"></div>`).join('')}
+            </div>
+        `;
+        
+        window.showTestimonial = (index) => {
+            document.querySelectorAll('.testimonial-slide').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.test-dot').forEach(el => el.classList.remove('active'));
+            document.getElementById(`test-slide-${index}`).classList.add('active');
+            document.querySelectorAll('.test-dot')[index].classList.add('active');
+        };
+    }
+    
+    slider.innerHTML = html;
 }
 
 async function loadAbout() {

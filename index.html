@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixcy Studios - Luxury Wedding Photography | Chennai</title>
-    <meta name="description" content="Premium wedding photography and videography in Chennai, covering South India. Capturing timeless moments with artistic excellence.">
+    <title>Pixcy Studios - Premium Wedding Photography | Chennai</title>
+    <meta name="description" content="Premium wedding photography and videography in Chennai, covering South India. Capturing timeless moments with elegant artistry.">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- WhatsApp Float -->
@@ -19,150 +19,141 @@
     </a>
 
     <!-- Header -->
-    <header class="header" id="header">
-        <div class="header-content">
-            <div class="logo" id="logo-display">PIXCY STUDIOS</div>
-            <nav class="nav">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#services" class="nav-link">Services</a>
-                <a href="#portfolio" class="nav-link">Portfolio</a>
-                <a href="#testimonials" class="nav-link">Testimonials</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </nav>
-            <button class="menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+    <nav id="header">
+        <div class="logo" id="logo-display">PIXCY<span>STUDIOS</span></div>
+        <div class="nav-links" id="nav-links">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#couples">Albums</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
         </div>
-    </header>
+        <button class="menu-toggle" id="menu-toggle">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
 
     <!-- Hero -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1 class="hero-title" id="hero-title">Capturing Life's Precious Moments</h1>
-            <p class="hero-subtitle" id="hero-subtitle">Premium Wedding Photography & Videography Across South India</p>
+            <h1 class="hero-title" id="hero-title">Timeless <span id="hero-title-span">Elegance</span></h1>
+            <p class="hero-sub" id="hero-subtitle">Premium Wedding Photography & Videography</p>
             <a href="#contact" class="btn-primary">Book Your Session</a>
         </div>
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <div class="scroll-line"></div>
+        <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80" alt="Wedding" style="width:100%;height:100%;object-fit:cover;">
         </div>
     </section>
 
     <!-- Services -->
-    <section id="services" class="services">
-        <div class="section-header">
-            <span class="section-label">What We Do</span>
-            <h2 class="section-title">Our Services</h2>
-        </div>
-        <div class="services-grid" id="services-grid">
-            <!-- Services loaded from localStorage -->
-        </div>
-    </section>
+    <div class="services-wrapper" id="services">
+        <section class="services">
+            <div class="section-header">
+                <span class="section-label">What We Do</span>
+                <h2 class="section-title">Our Services</h2>
+            </div>
+            <div id="services-grid">
+                <!-- Services loaded dynamically -->
+            </div>
+        </section>
+    </div>
 
     <!-- Portfolio -->
     <section id="portfolio" class="portfolio">
-        <div class="section-header">
-            <span class="section-label">Our Work</span>
-            <h2 class="section-title">Portfolio</h2>
-        </div>
-        <div class="portfolio-grid" id="portfolio-grid">
-            <!-- Portfolio loaded from localStorage -->
+        <div class="port-header">Selected Works</div>
+        <div class="port-grid" id="portfolio-grid">
+            <!-- Portfolio loaded dynamically -->
         </div>
     </section>
 
-    <!-- Couples -->
-    <section id="couples" class="couples">
-        <div class="section-header">
-            <span class="section-label">Love Stories</span>
-            <h2 class="section-title">Wedding Albums</h2>
-        </div>
+    <!-- Couples/Albums -->
+    <section id="couples" class="portfolio">
+        <div class="port-header">Love Stories</div>
         <div class="couples-grid" id="couples-grid">
-            <!-- Couples loaded from localStorage -->
+            <!-- Couples loaded dynamically -->
         </div>
     </section>
 
     <!-- Testimonials -->
-    <section id="testimonials" class="testimonials">
-        <div class="section-header">
+    <div class="testimonials-wrapper" id="testimonials">
+        <section class="testimonials">
             <span class="section-label">Client Love</span>
-            <h2 class="section-title">Testimonials</h2>
-        </div>
-        <div class="testimonials-slider" id="testimonials-slider">
-            <!-- Testimonials loaded from localStorage -->
-        </div>
-    </section>
+            <div id="testimonials-slider">
+                <!-- Testimonials loaded dynamically -->
+            </div>
+        </section>
+    </div>
 
     <!-- About -->
     <section id="about" class="about">
         <div class="about-content">
-            <div class="about-image" id="about-image-container">
-                <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800&h=1000&fit=crop" alt="About Pixcy Studios" id="about-image">
+            <div class="about-image-container">
+                <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800&h=1000&fit=crop" alt="About Pixcy Studios" id="about-image" class="about-image">
             </div>
             <div class="about-text">
                 <span class="section-label">Our Story</span>
                 <h2 class="section-title" id="about-title">About Pixcy Studios</h2>
                 <div id="about-content">
-                    <p>Founded by Pradeep Bernard, Pixcy Studios is a premier photography and videography service based in Chennai, specializing in capturing life's most precious moments.</p>
-                    <p>With years of experience in wedding photography, pre-wedding shoots, baby showers, maternity sessions, corporate events, and more, we bring creativity, professionalism, and passion to every project.</p>
-                    <p>We serve clients across South India, combining traditional techniques with modern cinematic storytelling to create timeless memories you'll cherish forever.</p>
+                    <!-- About content loaded dynamically -->
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="contact">
-        <div class="contact-wrapper">
-            <div class="contact-info">
-                <span class="section-label">Get In Touch</span>
-                <h2 class="section-title">Contact Us</h2>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-icon">📍</div>
-                        <div>
-                            <h4>Location</h4>
-                            <p id="contact-location">Chennai, Tamil Nadu</p>
+    <div class="contact-wrapper" id="contact">
+        <section class="contact">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-label">Get In Touch</span>
+                    <h2 class="section-title">Contact Us</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div>
+                                <h4>Location</h4>
+                                <p id="contact-location">Chennai, Tamil Nadu</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">📧</div>
+                            <div>
+                                <h4>Email</h4>
+                                <p><a href="mailto:hello@pixcystudios.com" id="contact-email">hello@pixcystudios.com</a></p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">📱</div>
+                            <div>
+                                <h4>Phone</h4>
+                                <p><a href="tel:+919876543210" id="contact-phone">+91 98765 43210</a></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-icon">📧</div>
-                        <div>
-                            <h4>Email</h4>
-                            <p><a href="mailto:hello@pixcystudios.com" id="contact-email">hello@pixcystudios.com</a></p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-icon">📱</div>
-                        <div>
-                            <h4>Phone</h4>
-                            <p><a href="tel:+919876543210" id="contact-phone">+91 98765 43210</a></p>
-                        </div>
+                    <div class="social-links">
+                        <a href="#" id="instagram-link" class="social-btn">Instagram</a>
+                        <a href="#" id="youtube-link" class="social-btn">YouTube</a>
                     </div>
                 </div>
-                <div class="social-links">
-                    <a href="#" id="instagram-link" class="social-btn">Instagram</a>
-                    <a href="#" id="youtube-link" class="social-btn">YouTube</a>
-                </div>
+                <form class="contact-form" id="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <input type="tel" placeholder="Phone Number" required>
+                    <select required>
+                        <option value="">Select Service</option>
+                        <option>Wedding Photography</option>
+                        <option>Pre-Wedding Shoot</option>
+                        <option>Maternity Shoot</option>
+                        <option>Other</option>
+                    </select>
+                    <textarea placeholder="Tell us about your event..." rows="5" required></textarea>
+                    <button type="submit" class="btn-primary">Send Message</button>
+                </form>
             </div>
-            <form class="contact-form" id="contact-form">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <input type="tel" placeholder="Phone Number" required>
-                <select required>
-                    <option value="">Select Service</option>
-                    <option>Wedding Photography</option>
-                    <option>Pre-Wedding Shoot</option>
-                    <option>Maternity Shoot</option>
-                    <option>Other</option>
-                </select>
-                <textarea placeholder="Tell us about your event..." rows="5" required></textarea>
-                <button type="submit" class="btn-primary">Send Message</button>
-            </form>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -171,16 +162,16 @@
 
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
-        <button class="lightbox-close">&times;</button>
-        <button class="lightbox-nav lightbox-prev">‹</button>
-        <button class="lightbox-nav lightbox-next">›</button>
+        <button class="lightbox-close" onclick="document.getElementById('lightbox').classList.remove('active')">&times;</button>
+        <button class="lightbox-nav lightbox-prev" onclick="prevPhoto()">‹</button>
+        <button class="lightbox-nav lightbox-next" onclick="nextPhoto()">›</button>
         <img src="" alt="" class="lightbox-img">
     </div>
 
     <!-- Couple Modal -->
     <div class="couple-modal" id="couple-modal">
         <div class="modal-content">
-            <button class="modal-close">&times;</button>
+            <button class="modal-close" onclick="document.getElementById('couple-modal').classList.remove('active')">&times;</button>
             <h2 class="modal-title" id="modal-title"></h2>
             <div class="modal-grid" id="modal-grid"></div>
         </div>
