@@ -1146,6 +1146,7 @@ footer {
     }
     .videos-grid {
         display: flex;
+        align-items: center;
         overflow-x: auto;
         overflow-y: hidden;
         scroll-snap-type: x mandatory;
@@ -1162,5 +1163,11 @@ footer {
         flex: 0 0 85vw;
         scroll-snap-align: center;
         margin-bottom: 0;
+    }
+    /* Force uniform aspect ratio for smooth horizontal slider on mobile */
+    .yt-card.tall .yt-thumb,
+    .yt-card.square .yt-thumb,
+    .yt-card.wide .yt-thumb {
+        aspect-ratio: 16/9;
     }
 }
