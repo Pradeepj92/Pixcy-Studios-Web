@@ -1,7 +1,7 @@
 // Admin Panel — Pixcy Studios
-// Uses: Cloudinary for images, Supabase for all text content
+// Uses: Cloudinary for images, Supabase for all text content + admin auth
 
-import { dbGet, dbSet, uploadImage } from './config.js';
+import { supabase, dbGet, dbSet, uploadImage } from './config.js';
 
 // ─── State ─────────────────────────────────────────────────────────────────
 let servicesData = [];
@@ -10,8 +10,55 @@ let couplesData = [];
 let testimonialsData = [];
 let videosData = [];   // array of YouTube URLs
 
-// ─── Init ──────────────────────────────────────────────────────────────────
+// ─── Auth Gate ─────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
+    setupLogin();
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+        await enterAdmin();
+    }
+});
+
+function setupLogin() {
+    const loginBtn = document.getElementById('pw-login-btn');
+    const emailInput = document.getElementById('admin-email');
+    const passwordInput = document.getElementById('admin-password');
+    const errorEl = document.getElementById('password-error');
+
+    async function attemptLogin() {
+        errorEl.style.display = 'none';
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Signing in…';
+        const { error } = await supabase.auth.signInWithPassword({
+            email: emailInput.value.trim(),
+            password: passwordInput.value,
+        });
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+        if (error) {
+            errorEl.textContent = '❌ ' + error.message;
+            errorEl.style.display = 'block';
+            passwordInput.value = '';
+            return;
+        }
+        passwordInput.value = '';
+        await enterAdmin();
+    }
+
+    loginBtn.addEventListener('click', attemptLogin);
+    [emailInput, passwordInput].forEach(el => {
+        el.addEventListener('keypress', e => { if (e.key === 'Enter') attemptLogin(); });
+    });
+
+    document.getElementById('btn-sign-out').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        window.location.reload();
+    });
+}
+
+async function enterAdmin() {
+    document.getElementById('password-overlay').style.display = 'none';
     showToast('Loading data…');
     try {
         await loadAllData();
@@ -23,7 +70,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupTabs();
     setupPortfolioDrop();
     setupButtonListeners();
-});
+}
 
 // ─── Tab Switching ─────────────────────────────────────────────────────────
 function setupTabs() {

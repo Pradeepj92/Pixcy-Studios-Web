@@ -15,11 +15,13 @@
         }
         #password-overlay h2 { color: #d4af37; margin-bottom: 8px; font-size: 1.4rem; }
         #password-overlay p  { color: #aaa; margin-bottom: 20px; font-size: 0.9rem; }
-        #admin-password {
+        #admin-email, #admin-password {
+            display: block;
             padding: 12px 16px; font-size: 16px; margin-bottom: 10px;
             border-radius: 6px; border: 2px solid #d4af37; background: #111;
             color: #fff; width: 260px; text-align: center;
         }
+        #pw-login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         #pw-login-btn {
             padding: 12px 28px; font-size: 15px; cursor: pointer;
             background: #d4af37; color: #000; border: none; border-radius: 6px;
@@ -39,37 +41,26 @@
 </head>
 <body>
 
-<!-- Password Overlay -->
+<!-- Login Overlay -->
 <div id="password-overlay">
     <h2>🔐 Admin Access</h2>
     <p>Pixcy Studios — Private Area</p>
-    <input type="password" id="admin-password" placeholder="Enter password" autocomplete="off">
+    <input type="email" id="admin-email" placeholder="Email" autocomplete="username">
+    <input type="password" id="admin-password" placeholder="Password" autocomplete="current-password">
     <br>
-    <button id="pw-login-btn" onclick="checkPassword()">Login</button>
-    <div id="password-error">❌ Incorrect password!</div>
+    <button id="pw-login-btn" type="button">Login</button>
+    <div id="password-error">❌ Incorrect email or password!</div>
 </div>
-<script>
-    // Allow Enter key to submit password
-    document.getElementById('admin-password').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') checkPassword();
-    });
-    function checkPassword() {
-        const pass = document.getElementById('admin-password').value;
-        if (pass === 'pixcy2024') {
-            document.getElementById('password-overlay').style.display = 'none';
-        } else {
-            document.getElementById('password-error').style.display = 'block';
-            document.getElementById('admin-password').value = '';
-        }
-    }
-</script>
 
 <!-- Upload Toast -->
 <div id="upload-toast">⏳ Uploading, please wait...</div>
 
 <div class="admin-header">
     <h1>Pixcy Studios — Admin Panel</h1>
-    <a href="index.html" class="btn-back">← Back to Website</a>
+    <div style="display:flex; gap:12px; align-items:center;">
+        <button id="btn-sign-out" class="btn-back" type="button">Sign Out</button>
+        <a href="index.html" class="btn-back">← Back to Website</a>
+    </div>
 </div>
 
 <div class="admin-container">
