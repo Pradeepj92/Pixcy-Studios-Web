@@ -1,7 +1,7 @@
 // Content Loader — Pixcy Studios
 // Reads all content from Supabase, images already served from Cloudinary URLs
 
-import { dbGet } from './config.js';
+import { dbGet, insertLead } from './config.js?v=3';
 
 // Track data for lightbox/modals
 let portfolioImages = [];
@@ -347,7 +347,7 @@ function setFieldError(field, message) {
     if (err) err.textContent = message;
 }
 
-window.submitToWhatsApp = function(event) {
+window.submitToWhatsApp = async function(event) {
     event.preventDefault();
 
     const nameField = document.getElementById('wa-name');
@@ -418,6 +418,15 @@ window.submitToWhatsApp = function(event) {
     try { sessionStorage.setItem('pixcyWaUrl', waUrl); } catch (e) { /* storage unavailable — fallback link just won't show */ }
 
     window.open(waUrl, '_blank');
+
+    // Back up the inquiry in Supabase too — WhatsApp stays the primary
+    // channel. Give it a brief chance to finish before navigating away,
+    // since an unawaited fetch gets aborted the moment the page unloads.
+    await Promise.race([
+        insertLead({ name, email, phone: normalizedPhone, service, message: msg }).catch(() => {}),
+        new Promise((resolve) => setTimeout(resolve, 1200)),
+    ]);
+
     window.location.href = 'thank-you.html';
 };
 

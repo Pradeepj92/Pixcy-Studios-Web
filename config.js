@@ -33,6 +33,14 @@ async function dbSet(section, data) {
   if (error) throw new Error(`Supabase error: ${error.message}`);
 }
 
+// Backs up a contact-form submission alongside the WhatsApp message. RLS on
+// `leads` only allows public INSERT — never read — so this can't leak other
+// visitors' data even though it runs with the public anon key.
+async function insertLead(lead) {
+  const { error } = await supabase.from('leads').insert(lead);
+  if (error) throw new Error(`Supabase error: ${error.message}`);
+}
+
 // ─── Cloudinary Upload Helper ─────────────────────────────────────────────────
 
 async function uploadImage(file) {
@@ -49,4 +57,4 @@ async function uploadImage(file) {
   return result.secure_url;
 }
 
-export { supabase, dbGet, dbSet, uploadImage };
+export { supabase, dbGet, dbSet, insertLead, uploadImage };

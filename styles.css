@@ -1332,7 +1332,18 @@ footer {
         padding: 0 1rem;
     }
     
-    .hero-img { width: 100%; opacity: 0.3; }
+    /* A flat opacity on the whole image let text baked into the source
+       photo itself (e.g. a caption near the bottom) show through faintly
+       behind the hero heading. A bottom-heavy scrim keeps the photo
+       recognizable while reliably hiding whatever's printed on it. */
+    .hero-img {
+        width: 100%;
+        opacity: 0.55;
+    }
+
+    .hero-img::after {
+        background: linear-gradient(180deg, rgba(42, 39, 37, 0.35) 0%, rgba(42, 39, 37, 0.6) 55%, rgba(42, 39, 37, 0.92) 100%);
+    }
 
     /* 2 columns with aspect-ratio sizing instead of a fixed 450px row —
        a single 450px-tall column for 29 photos made the portfolio section
