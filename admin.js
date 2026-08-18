@@ -138,6 +138,7 @@ async function loadAllData() {
 
     couplesData = coup ? coup.list || [] : [];
     couplesData.length > 0 ? displayCouples() : addCoupleRow();
+    document.getElementById('couples-visible').checked = coup?.visible !== false;
 
     testimonialsData = test ? test.list || [] : [];
     testimonialsData.length > 0 ? displayTestimonials() : addTestimonialRow();
@@ -370,7 +371,8 @@ async function saveCouples() {
         updated.push({ name, cover, photos });
     }
     couplesData = updated;
-    await dbSet('couples', { list: couplesData });
+    const visible = document.getElementById('couples-visible').checked;
+    await dbSet('couples', { list: couplesData, visible });
     displayCouples();
     msg('couples-message', 'Couples saved!');
     hideToast();

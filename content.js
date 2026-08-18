@@ -165,6 +165,19 @@ window.closeVideoModal = function() {
 
 async function loadCouples() {
     const data = await dbGet('couples');
+    const wrapper = document.querySelector('.couples-wrapper');
+    const navLink = document.getElementById('nav-couples-link');
+
+    // Hidden until explicitly turned back on in the admin panel's Couples
+    // tab (visible !== false, so existing content defaults to shown).
+    if (data?.visible === false) {
+        if (wrapper) wrapper.style.display = 'none';
+        if (navLink) navLink.style.display = 'none';
+        return;
+    }
+    if (wrapper) wrapper.style.display = '';
+    if (navLink) navLink.style.display = '';
+
     allCouples = data?.list || [];
     const grid = document.getElementById('couples-grid');
 
