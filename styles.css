@@ -854,7 +854,7 @@ section {
         background: var(--gold);
         color: var(--bg);
         text-align: center;
-        padding: 1rem;
+        padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
         font-size: 1rem;
         font-weight: 500;
         letter-spacing: 1px;
@@ -863,21 +863,21 @@ section {
     }
 
     .whatsapp-float {
-        bottom: 78px;
+        bottom: calc(78px + env(safe-area-inset-bottom, 0px));
         right: 16px;
         width: 52px;
         height: 52px;
     }
 
     body {
-        padding-bottom: 52px;
+        padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
     }
 
     /* Clear the sticky CTA bar (0-52px) and the WhatsApp float (78-130px) */
     .cookie-banner {
         left: 1rem;
         right: 1rem;
-        bottom: 140px;
+        bottom: calc(140px + env(safe-area-inset-bottom, 0px));
     }
 
     /* --- 390px audit: text under 16px and tap targets under 44px --- */
@@ -1240,6 +1240,7 @@ footer {
 .footer-socials {
     margin-top: 1rem;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
     align-items: center;
@@ -1334,11 +1335,38 @@ footer {
     .hero { padding: 0 1.5rem; }
     section { padding: 5rem 1.5rem; }
     .services-wrapper, .testimonials-wrapper, .contact-wrapper { padding: 5rem 1.5rem; }
+
+    /* .portfolio has its own class-specific padding (0 6rem = 96px each
+       side) that beats the generic `section` rule above regardless of
+       media query, since a class selector always outranks a type selector.
+       Used by both #portfolio and #couples ("Love Stories"). */
+    .portfolio {
+        padding: 0 1rem;
+    }
     
     .hero-img { width: 100%; opacity: 0.3; }
-    
-    .port-grid, .couples-grid, .modal-grid {
-        grid-template-columns: 1fr;
+
+    /* 2 columns with aspect-ratio sizing instead of a fixed 450px row —
+       a single 450px-tall column for 29 photos made the portfolio section
+       alone ~14,000px tall, pushing #contact far enough down that the
+       sticky CTA's smooth-scroll felt broken and the page felt endless. */
+    .port-grid, .couples-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: auto;
+        gap: 0.75rem;
+    }
+
+    .modal-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .port-grid .p-item, .couples-grid .p-item {
+        aspect-ratio: 3/4;
+    }
+
+    .port-grid .p1 {
+        grid-column: span 1;
+        grid-row: span 1;
     }
 }
 
