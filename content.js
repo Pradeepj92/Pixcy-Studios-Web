@@ -1,7 +1,7 @@
 // Content Loader — Pixcy Studios
 // Reads all content from Supabase, images already served from Cloudinary URLs
 
-import { dbGet, insertLead } from './config.js?v=3';
+import { dbGet, insertLead } from './config.js?v=4';
 
 // Track data for lightbox/modals
 let portfolioImages = [];
