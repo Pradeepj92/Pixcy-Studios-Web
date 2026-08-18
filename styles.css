@@ -855,7 +855,7 @@ section {
         color: var(--bg);
         text-align: center;
         padding: 1rem;
-        font-size: 0.9rem;
+        font-size: 1rem;
         font-weight: 500;
         letter-spacing: 1px;
         text-transform: uppercase;
@@ -878,6 +878,31 @@ section {
         left: 1rem;
         right: 1rem;
         bottom: 140px;
+    }
+
+    /* --- 390px audit: text under 16px and tap targets under 44px --- */
+    .btn-primary,
+    .section-label,
+    .couple-count,
+    .google-date,
+    .google-text,
+    .footer p {
+        font-size: 1rem;
+    }
+
+    .info-item a {
+        display: inline-block;
+        padding: 0.75rem 0;
+    }
+
+    .footer-socials a {
+        display: inline-block;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .cookie-btn {
+        padding: 0.9rem 1.4rem;
+        font-size: 1rem;
     }
 }
 
@@ -1259,6 +1284,16 @@ footer {
 
     .menu-toggle {
         display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* Off-screen at this width (body clips overflow-x) and duplicated by the
+       footer social links, so hide rather than leave an unreachable tap target. */
+    .header-socials {
+        display: none;
     }
 
     .hero-title { font-size: 4rem; }
@@ -1337,5 +1372,23 @@ footer {
     .yt-card.square .yt-thumb,
     .yt-card.wide .yt-thumb {
         aspect-ratio: 16/9;
+    }
+}
+
+/* Placed last so it wins over base rules declared further up the file
+   with the same specificity (later source wins). */
+@media (max-width: 640px) {
+    .footer-socials,
+    .footer-socials a,
+    .social-btn,
+    .info-item h4,
+    .cookie-banner p {
+        font-size: 1rem;
+    }
+
+    a.logo {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
     }
 }

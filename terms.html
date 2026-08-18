@@ -30,6 +30,13 @@
         .legal-page p, .legal-page li { color: var(--muted); line-height: 1.8; font-size: 0.95rem; }
         .legal-page ul { padding-left: 1.4rem; margin-bottom: 1rem; }
         .legal-page a { color: var(--gold); }
+        @media (max-width: 640px) {
+            .legal-page p, .legal-page li, .legal-page .updated { font-size: 1rem; }
+            .legal-page p a[href^="mailto:"], .legal-page p a[href^="tel:"] {
+                display: inline-block;
+                padding: 0.5rem 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -83,7 +90,7 @@
             Phone: <a href="tel:+919940056549">+91 99400 56549</a>
         </p>
 
-        <p style="margin-top:2.5rem;font-size:0.8rem;">This is a general-purpose terms template and has not been reviewed by a lawyer. See the separate guess-list and lawyer-review checklist provided alongside this draft before relying on it.</p>
+        <p style="margin-top:2.5rem;font-size:1rem;">This is a general-purpose terms template and has not been reviewed by a lawyer. See the separate guess-list and lawyer-review checklist provided alongside this draft before relying on it.</p>
     </main>
 
     <footer class="footer">
