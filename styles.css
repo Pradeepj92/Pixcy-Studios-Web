@@ -357,6 +357,28 @@ section {
     cursor: pointer;
 }
 
+@keyframes skeleton-shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+}
+
+.skel-shimmer {
+    background: var(--bg-alt);
+    background-image: linear-gradient(90deg, var(--bg-alt) 0px, rgba(201, 169, 110, 0.12) 40px, var(--bg-alt) 80px);
+    background-size: 400px 100%;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+    cursor: default;
+    pointer-events: none;
+}
+
+.svc-row.skel-shimmer {
+    border-bottom: 1px solid var(--gold-light);
+}
+
+.review-card.skel-shimmer {
+    height: 180px;
+}
+
 .p-item img {
     width: 100%;
     height: 100%;
@@ -697,6 +719,45 @@ section {
     min-height: 150px;
 }
 
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.contact-form input.invalid,
+.contact-form select.invalid,
+.contact-form textarea.invalid {
+    border-color: #d94f4f;
+}
+
+.field-error {
+    color: #d94f4f;
+    font-size: 0.8rem;
+    min-height: 1em;
+}
+
+.form-success {
+    background: var(--bg);
+    border: 1px solid var(--gold);
+    padding: 1.5rem;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.form-success strong {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.form-success a {
+    color: var(--gold);
+    text-decoration: underline;
+}
+
 /* --- FOOTER --- */
 .footer {
     background: var(--text);
@@ -727,6 +788,97 @@ section {
 .whatsapp-float:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 30px rgba(201, 169, 110, 0.5);
+}
+
+.mobile-cta-bar {
+    display: none;
+}
+
+.cookie-banner {
+    position: fixed;
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--text);
+    color: var(--bg);
+    padding: 1.4rem 1.6rem;
+    border-radius: 6px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.cookie-banner p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.cookie-banner a {
+    color: var(--gold);
+}
+
+.cookie-banner-actions {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: flex-end;
+}
+
+.cookie-btn {
+    background: var(--gold);
+    color: var(--text);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.cookie-btn-outline {
+    background: transparent;
+    color: var(--bg);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+@media (max-width: 640px) {
+    .mobile-cta-bar {
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 998;
+        background: var(--gold);
+        color: var(--bg);
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+
+    .whatsapp-float {
+        bottom: 78px;
+        right: 16px;
+        width: 52px;
+        height: 52px;
+    }
+
+    body {
+        padding-bottom: 52px;
+    }
+
+    /* Clear the sticky CTA bar (0-52px) and the WhatsApp float (78-130px) */
+    .cookie-banner {
+        left: 1rem;
+        right: 1rem;
+        bottom: 140px;
+    }
 }
 
 /* --- LIGHTBOX --- */

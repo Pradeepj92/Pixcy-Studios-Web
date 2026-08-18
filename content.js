@@ -29,6 +29,13 @@ window.prevPhoto = prevPhoto;
 window.openCoupleModal = openCoupleModal;
 window.openCouplePhoto = openCouplePhoto;
 
+// Apply Cloudinary auto-format/auto-quality + width cap to any Cloudinary URL.
+// Non-Cloudinary URLs (Unsplash, YouTube thumbnails, etc.) are returned unchanged.
+function optimize(url, width) {
+    if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
+    return url.replace('/upload/', `/upload/f_auto,q_auto,w_${width}/`);
+}
+
 // Fisher-Yates shuffle
 function shuffle(arr) {
     const a = [...arr];
@@ -57,7 +64,7 @@ async function loadHero() {
     if (data && data.image) {
         const heroImg = document.querySelector('.hero-img img');
         if (heroImg) {
-            heroImg.src = data.image;
+            heroImg.src = optimize(data.image, 1920);
         }
     }
 }
@@ -78,7 +85,7 @@ async function loadServices() {
     grid.innerHTML = services.map((s, i) => `
         <div class="svc-row">
             <div class="svc-num">0${i + 1}</div>
-            ${s.image ? `<div class="svc-img-container"><img src="${s.image}" alt="${s.name}" loading="lazy"></div>` : `<div class="svc-img-container"></div>`}
+            ${s.image ? `<div class="svc-img-container"><img src="${optimize(s.image, 600)}" alt="${s.name}" loading="lazy"></div>` : `<div class="svc-img-container"></div>`}
             <div class="svc-info">
                 <div class="svc-name">${s.name}</div>
                 <div class="svc-desc">${s.description}</div>
@@ -99,7 +106,7 @@ async function loadPortfolio() {
 
     grid.innerHTML = portfolioImages.map((img, i) => `
         <div class="p-item ${i === 0 ? 'p1' : ''}" onclick="openLightbox(${i})">
-            <img src="${img}" alt="Portfolio ${i + 1}" loading="lazy">
+            <img src="${optimize(img, 600)}" alt="Portfolio ${i + 1}" loading="lazy">
         </div>
     `).join('');
 }
@@ -167,7 +174,7 @@ async function loadCouples() {
 
     grid.innerHTML = allCouples.map((c, i) => `
         <div class="p-item ${i === 0 ? 'p1' : ''}" onclick="openCoupleModal(${i})">
-            <img src="${c.cover}" alt="${c.name}" loading="lazy">
+            <img src="${optimize(c.cover, 600)}" alt="${c.name}" loading="lazy">
             <div class="couple-info">
                 <h3 class="couple-name">${c.name}</h3>
                 <p class="couple-count">${(c.photos || []).length} Photos</p>
@@ -274,7 +281,7 @@ async function loadAbout() {
         document.getElementById('about-content').innerHTML = data.text || '';
     }
     if (data && data.image) {
-        document.getElementById('about-image').src = data.image;
+        document.getElementById('about-image').src = optimize(data.image, 800);
     }
 }
 
@@ -327,18 +334,85 @@ async function loadContact() {
     }
 }
 
+function clearFieldError(field) {
+    field.classList.remove('invalid');
+    const err = field.parentElement.querySelector('.field-error');
+    if (err) err.textContent = '';
+}
+
+function setFieldError(field, message) {
+    field.classList.add('invalid');
+    const err = field.parentElement.querySelector('.field-error');
+    if (err) err.textContent = message;
+}
+
 window.submitToWhatsApp = function(event) {
     event.preventDefault();
-    const name = document.getElementById('wa-name').value;
-    const email = document.getElementById('wa-email').value;
-    const phone = document.getElementById('wa-phone').value;
-    const service = document.getElementById('wa-service').value;
-    const msg = document.getElementById('wa-msg').value;
-    
-    const text = `Hello Pixcy Studios!%0A%0A*New Inquiry from Website*%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Email:* ${email}%0A*Service Interested:* ${service}%0A*Details:* ${msg}`;
+
+    const nameField = document.getElementById('wa-name');
+    const emailField = document.getElementById('wa-email');
+    const phoneField = document.getElementById('wa-phone');
+    const serviceField = document.getElementById('wa-service');
+    const msgField = document.getElementById('wa-msg');
+    const fields = [nameField, emailField, phoneField, serviceField, msgField];
+
+    fields.forEach(clearFieldError);
+
+    const name = nameField.value.trim();
+    const email = emailField.value.trim();
+    const phone = phoneField.value.trim();
+    const service = serviceField.value;
+    const msg = msgField.value.trim();
+
+    let valid = true;
+
+    if (!name) {
+        setFieldError(nameField, 'Please enter your name');
+        valid = false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setFieldError(emailField, 'Please enter a valid email');
+        valid = false;
+    }
+    // Normalize away punctuation and an optional leading 0 or 91 country code
+    // before checking for a 10-digit Indian mobile number.
+    let normalizedPhone = phone.replace(/\D/g, '');
+    if (normalizedPhone.length === 12 && normalizedPhone.startsWith('91')) {
+        normalizedPhone = normalizedPhone.slice(2);
+    } else if (normalizedPhone.length === 11 && normalizedPhone.startsWith('0')) {
+        normalizedPhone = normalizedPhone.slice(1);
+    }
+    if (!/^\d{10}$/.test(normalizedPhone)) {
+        setFieldError(phoneField, 'Please enter a valid 10-digit phone number');
+        valid = false;
+    }
+    if (!service) {
+        setFieldError(serviceField, 'Please select a service');
+        valid = false;
+    }
+    if (!msg) {
+        setFieldError(msgField, 'Please tell us about your event');
+        valid = false;
+    }
+
+    if (!valid) return;
+
+    const text = `Hello Pixcy Studios!%0A%0A*New Inquiry from Website*%0A*Name:* ${name}%0A*Phone:* ${normalizedPhone}%0A*Email:* ${email}%0A*Service Interested:* ${service}%0A*Details:* ${msg}`;
     const waNumber = window.waNumber || '919876543210';
-    
-    window.open(`https://wa.me/${waNumber}?text=${text}`, '_blank');
+    const waUrl = `https://wa.me/${waNumber}?text=${text}`;
+
+    const waWindow = window.open(waUrl, '_blank');
+
+    const form = document.getElementById('contact-form');
+    const success = document.getElementById('form-success');
+    const successLink = document.getElementById('form-success-link');
+    if (form && success) {
+        form.hidden = true;
+        success.hidden = false;
+        // window.open()'s return value isn't a reliable popup-blocked signal across
+        // browsers, so always surface a manual link rather than trusting it opened.
+        if (successLink) successLink.href = waUrl;
+    }
 };
 
 // ─── Lightbox ──────────────────────────────────────────────────────────────
@@ -350,7 +424,7 @@ function openLightbox(index) {
 }
 
 function updateLightboxImage() {
-    document.querySelector('.lightbox-img').src = portfolioImages[currentLightboxIndex] || '';
+    document.querySelector('.lightbox-img').src = optimize(portfolioImages[currentLightboxIndex], 1600) || '';
 }
 
 function nextPhoto() {
@@ -369,7 +443,7 @@ function openCoupleModal(index) {
     if (!couple) return;
     document.getElementById('modal-title').textContent = couple.name;
     document.getElementById('modal-grid').innerHTML = (couple.photos || []).map((p, i) =>
-        `<img src="${p}" alt="${couple.name} ${i + 1}" loading="lazy" onclick="openCouplePhoto(${index}, ${i})">`
+        `<img src="${optimize(p, 600)}" alt="${couple.name} ${i + 1}" loading="lazy" onclick="openCouplePhoto(${index}, ${i})">`
     ).join('');
     document.getElementById('couple-modal').classList.add('active');
     document.body.style.overflow = 'hidden';

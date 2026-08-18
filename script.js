@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
     setupModals();
-    setupForms();
+    setupCookieConsent();
 });
 
 function setupNavigation() {
@@ -97,11 +97,43 @@ function closeCoupleModal() {
     document.body.style.overflow = '';
 }
 
-function setupForms() {
-    const form = document.getElementById('contact-form');
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        alert('Thank you! We will contact you soon.');
-        form.reset();
+function loadGoogleAnalytics() {
+    const id = window.GA_MEASUREMENT_ID;
+    if (!id || id === 'G-XXXXXXXXXX') return; // placeholder not yet replaced — skip
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', id);
+}
+
+function setupCookieConsent() {
+    const banner = document.getElementById('cookie-banner');
+    if (!banner) return;
+
+    const consent = localStorage.getItem('cookieConsent');
+    if (consent === 'accepted') {
+        loadGoogleAnalytics();
+        return;
+    }
+    if (consent === 'declined') return;
+
+    banner.hidden = false;
+
+    document.getElementById('cookie-accept').addEventListener('click', () => {
+        localStorage.setItem('cookieConsent', 'accepted');
+        banner.hidden = true;
+        loadGoogleAnalytics();
+    });
+
+    document.getElementById('cookie-decline').addEventListener('click', () => {
+        localStorage.setItem('cookieConsent', 'declined');
+        banner.hidden = true;
     });
 }
