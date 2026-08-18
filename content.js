@@ -5,6 +5,7 @@ import { dbGet } from './config.js';
 
 // Track data for lightbox/modals
 let portfolioImages = [];
+let currentGalleryLabel = 'Portfolio photo';
 let allCouples = [];
 let currentLightboxIndex = 0;
 
@@ -398,25 +399,31 @@ window.submitToWhatsApp = function(event) {
     if (!valid) return;
 
     const text = `Hello Pixcy Studios!%0A%0A*New Inquiry from Website*%0A*Name:* ${name}%0A*Phone:* ${normalizedPhone}%0A*Email:* ${email}%0A*Service Interested:* ${service}%0A*Details:* ${msg}`;
-    const waNumber = window.waNumber || '919876543210';
+    const waNumber = window.waNumber || '919940056549';
     const waUrl = `https://wa.me/${waNumber}?text=${text}`;
 
-    const waWindow = window.open(waUrl, '_blank');
-
-    const form = document.getElementById('contact-form');
-    const success = document.getElementById('form-success');
-    const successLink = document.getElementById('form-success-link');
-    if (form && success) {
-        form.hidden = true;
-        success.hidden = false;
-        // window.open()'s return value isn't a reliable popup-blocked signal across
-        // browsers, so always surface a manual link rather than trusting it opened.
-        if (successLink) successLink.href = waUrl;
+    const submitBtn = document.querySelector('#contact-form button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        submitBtn.textContent = 'Sending...';
     }
+
+    if (window.gtag) {
+        window.gtag('event', 'generate_lead', { event_category: 'contact_form', event_label: service });
+    }
+
+    // Store the exact pre-filled WhatsApp link so the thank-you page can offer
+    // it as a manual fallback if the popup below was blocked.
+    try { sessionStorage.setItem('pixcyWaUrl', waUrl); } catch (e) { /* storage unavailable — fallback link just won't show */ }
+
+    window.open(waUrl, '_blank');
+    window.location.href = 'thank-you.html';
 };
 
 // ─── Lightbox ──────────────────────────────────────────────────────────────
 function openLightbox(index) {
+    currentGalleryLabel = 'Portfolio photo';
     currentLightboxIndex = index;
     updateLightboxImage();
     document.getElementById('lightbox').classList.add('active');
@@ -424,7 +431,9 @@ function openLightbox(index) {
 }
 
 function updateLightboxImage() {
-    document.querySelector('.lightbox-img').src = optimize(portfolioImages[currentLightboxIndex], 1600) || '';
+    const img = document.querySelector('.lightbox-img');
+    img.src = optimize(portfolioImages[currentLightboxIndex], 1600) || '';
+    img.alt = `${currentGalleryLabel} ${currentLightboxIndex + 1}`;
 }
 
 function nextPhoto() {
@@ -451,6 +460,7 @@ function openCoupleModal(index) {
 
 function openCouplePhoto(coupleIndex, photoIndex) {
     portfolioImages = allCouples[coupleIndex].photos || [];
+    currentGalleryLabel = allCouples[coupleIndex].name || 'Photo';
     currentLightboxIndex = photoIndex;
     updateLightboxImage();
     document.getElementById('couple-modal').classList.remove('active');

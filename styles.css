@@ -737,25 +737,13 @@ section {
     min-height: 1em;
 }
 
-.form-success {
-    background: var(--bg);
-    border: 1px solid var(--gold);
-    padding: 1.5rem;
-    color: var(--text);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    text-align: center;
+.btn-primary.loading {
+    opacity: 0.7;
+    cursor: default;
 }
 
-.form-success strong {
-    color: var(--gold);
-    display: block;
-    margin-bottom: 0.4rem;
-}
-
-.form-success a {
-    color: var(--gold);
-    text-decoration: underline;
+.btn-primary:disabled {
+    cursor: default;
 }
 
 /* --- FOOTER --- */
