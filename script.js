@@ -113,6 +113,17 @@ function loadGoogleAnalytics() {
     gtag('config', id);
 }
 
+function loadClarity() {
+    const id = window.CLARITY_ID;
+    if (!id) return;
+
+    (function (c, l, a, r, i, t, y) {
+        c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+        t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", id);
+}
+
 function setupCookieConsent() {
     const banner = document.getElementById('cookie-banner');
     if (!banner) return;
@@ -120,6 +131,7 @@ function setupCookieConsent() {
     const consent = localStorage.getItem('cookieConsent');
     if (consent === 'accepted') {
         loadGoogleAnalytics();
+        loadClarity();
         return;
     }
     if (consent === 'declined') return;
@@ -130,6 +142,7 @@ function setupCookieConsent() {
         localStorage.setItem('cookieConsent', 'accepted');
         banner.hidden = true;
         loadGoogleAnalytics();
+        loadClarity();
     });
 
     document.getElementById('cookie-decline').addEventListener('click', () => {
