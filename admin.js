@@ -102,6 +102,7 @@ function setupButtonListeners() {
     document.getElementById('btn-save-about').addEventListener('click', saveAbout);
     document.getElementById('btn-save-contact').addEventListener('click', saveContact);
     document.getElementById('btn-save-theme').addEventListener('click', saveTheme);
+    document.getElementById('btn-save-prewedding').addEventListener('click', savePreWeddingPage);
 }
 
 // ─── Portfolio Drop Zone ───────────────────────────────────────────────────
@@ -114,9 +115,10 @@ function setupPortfolioDrop() {
 
 // ─── Load All Data ─────────────────────────────────────────────────────────
 async function loadAllData() {
-    const [logo, hero, srv, port, vids, coup, test, about, contact, theme] = await Promise.all([
+    const [logo, hero, srv, port, vids, coup, test, about, contact, theme, prewedding] = await Promise.all([
         dbGet('logo'), dbGet('hero'), dbGet('services'), dbGet('portfolio'),
-        dbGet('videos'), dbGet('couples'), dbGet('testimonials'), dbGet('about'), dbGet('contact'), dbGet('theme')
+        dbGet('videos'), dbGet('couples'), dbGet('testimonials'), dbGet('about'), dbGet('contact'), dbGet('theme'),
+        dbGet('pre_wedding_page')
     ]);
 
     if (logo) document.getElementById('logo-text').value = logo.text || '';
@@ -159,6 +161,30 @@ async function loadAllData() {
     }
 
     document.getElementById('theme-mode').value = theme?.mode || 'default';
+
+    if (prewedding) {
+        document.getElementById('pw-eyebrow').value = prewedding.heroEyebrow || '';
+        document.getElementById('pw-line1').value = prewedding.heroLine1 || '';
+        document.getElementById('pw-line2').value = prewedding.heroLine2 || '';
+        document.getElementById('pw-subtext').value = prewedding.heroSubtext || '';
+        if (prewedding.heroImage) document.getElementById('pw-hero-image-preview').innerHTML = `<img src="${prewedding.heroImage}" style="max-width:300px;margin-top:8px;border-radius:4px;">`;
+        document.getElementById('pw-intro-1').value = prewedding.introPara1 || '';
+        document.getElementById('pw-intro-2').value = prewedding.introPara2 || '';
+        const gal = prewedding.galleryImages || [];
+        [1, 2, 3].forEach(i => {
+            if (gal[i - 1]) document.getElementById(`pw-gallery-${i}-preview`).innerHTML = `<img src="${gal[i - 1]}" style="max-width:200px;margin-top:8px;border-radius:4px;">`;
+        });
+        document.getElementById('pw-why1-title').value = prewedding.why1Title || '';
+        document.getElementById('pw-why1-desc').value = prewedding.why1Desc || '';
+        document.getElementById('pw-why2-title').value = prewedding.why2Title || '';
+        document.getElementById('pw-why2-desc').value = prewedding.why2Desc || '';
+        document.getElementById('pw-why3-title').value = prewedding.why3Title || '';
+        document.getElementById('pw-why3-desc').value = prewedding.why3Desc || '';
+        document.getElementById('pw-testimonial-quote').value = prewedding.testimonialQuote || '';
+        document.getElementById('pw-testimonial-author').value = prewedding.testimonialAuthor || '';
+        document.getElementById('pw-cta-heading').value = prewedding.ctaHeading || '';
+        document.getElementById('pw-cta-subtext').value = prewedding.ctaSubtext || '';
+    }
 }
 
 // ─── Branding ──────────────────────────────────────────────────────────────
@@ -463,6 +489,54 @@ async function saveTheme() {
     const mode = document.getElementById('theme-mode').value;
     await dbSet('theme', { mode });
     msg('theme-message', 'Theme saved! Refresh the website to see it.');
+    hideToast();
+}
+
+// ─── Pre-Wedding Page ───────────────────────────────────────────────────────
+async function savePreWeddingPage() {
+    showToast('Saving pre-wedding page…');
+    const existing = await dbGet('pre_wedding_page') || {};
+
+    let heroImage = existing.heroImage || '';
+    const heroFile = document.getElementById('pw-hero-image');
+    if (heroFile.files[0]) {
+        heroImage = await uploadImage(heroFile.files[0]);
+        document.getElementById('pw-hero-image-preview').innerHTML = `<img src="${heroImage}" style="max-width:300px;margin-top:8px;border-radius:4px;">`;
+    }
+
+    const galleryImages = existing.galleryImages ? [...existing.galleryImages] : ['', '', ''];
+    for (const i of [1, 2, 3]) {
+        const input = document.getElementById(`pw-gallery-${i}`);
+        if (input.files[0]) {
+            const url = await uploadImage(input.files[0]);
+            galleryImages[i - 1] = url;
+            document.getElementById(`pw-gallery-${i}-preview`).innerHTML = `<img src="${url}" style="max-width:200px;margin-top:8px;border-radius:4px;">`;
+        }
+    }
+
+    const data = {
+        heroEyebrow: document.getElementById('pw-eyebrow').value.trim(),
+        heroLine1: document.getElementById('pw-line1').value.trim(),
+        heroLine2: document.getElementById('pw-line2').value.trim(),
+        heroSubtext: document.getElementById('pw-subtext').value.trim(),
+        heroImage,
+        introPara1: document.getElementById('pw-intro-1').value.trim(),
+        introPara2: document.getElementById('pw-intro-2').value.trim(),
+        galleryImages,
+        why1Title: document.getElementById('pw-why1-title').value.trim(),
+        why1Desc: document.getElementById('pw-why1-desc').value.trim(),
+        why2Title: document.getElementById('pw-why2-title').value.trim(),
+        why2Desc: document.getElementById('pw-why2-desc').value.trim(),
+        why3Title: document.getElementById('pw-why3-title').value.trim(),
+        why3Desc: document.getElementById('pw-why3-desc').value.trim(),
+        testimonialQuote: document.getElementById('pw-testimonial-quote').value.trim(),
+        testimonialAuthor: document.getElementById('pw-testimonial-author').value.trim(),
+        ctaHeading: document.getElementById('pw-cta-heading').value.trim(),
+        ctaSubtext: document.getElementById('pw-cta-subtext').value.trim()
+    };
+
+    await dbSet('pre_wedding_page', data);
+    msg('prewedding-message', 'Pre-wedding page saved!');
     hideToast();
 }
 
