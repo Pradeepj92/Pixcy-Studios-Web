@@ -11,6 +11,7 @@ let currentLightboxIndex = 0;
 
 window.addEventListener('DOMContentLoaded', async () => {
     await Promise.all([
+        loadTheme(),
         loadBranding(),
         loadHero(),
         loadServices(),
@@ -29,6 +30,29 @@ window.nextPhoto = nextPhoto;
 window.prevPhoto = prevPhoto;
 window.openCoupleModal = openCoupleModal;
 window.openCouplePhoto = openCouplePhoto;
+
+// Site theme, toggled from the admin panel's Theme tab. Default is the
+// existing ivory/gold look, so a missing/errored fetch just leaves the
+// page as-is rather than needing a fallback branch here.
+async function loadTheme() {
+    const data = await dbGet('theme');
+    const mode = data?.mode || 'default';
+
+    if (mode === 'high-contrast') {
+        document.documentElement.setAttribute('data-theme', 'high-contrast');
+        // Only pulled in when this theme is actually active, so the default
+        // theme's page weight is unaffected.
+        if (!document.getElementById('theme-fonts')) {
+            const link = document.createElement('link');
+            link.id = 'theme-fonts';
+            link.rel = 'stylesheet';
+            link.href = 'https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@300;400;500;600&display=swap';
+            document.head.appendChild(link);
+        }
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+    }
+}
 
 // Apply Cloudinary auto-format/auto-quality + width cap to any Cloudinary URL.
 // Non-Cloudinary URLs (Unsplash, YouTube thumbnails, etc.) are returned unchanged.

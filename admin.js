@@ -101,6 +101,7 @@ function setupButtonListeners() {
     document.getElementById('btn-save-testimonials').addEventListener('click', saveTestimonials);
     document.getElementById('btn-save-about').addEventListener('click', saveAbout);
     document.getElementById('btn-save-contact').addEventListener('click', saveContact);
+    document.getElementById('btn-save-theme').addEventListener('click', saveTheme);
 }
 
 // ─── Portfolio Drop Zone ───────────────────────────────────────────────────
@@ -113,9 +114,9 @@ function setupPortfolioDrop() {
 
 // ─── Load All Data ─────────────────────────────────────────────────────────
 async function loadAllData() {
-    const [logo, hero, srv, port, vids, coup, test, about, contact] = await Promise.all([
+    const [logo, hero, srv, port, vids, coup, test, about, contact, theme] = await Promise.all([
         dbGet('logo'), dbGet('hero'), dbGet('services'), dbGet('portfolio'),
-        dbGet('videos'), dbGet('couples'), dbGet('testimonials'), dbGet('about'), dbGet('contact')
+        dbGet('videos'), dbGet('couples'), dbGet('testimonials'), dbGet('about'), dbGet('contact'), dbGet('theme')
     ]);
 
     if (logo) document.getElementById('logo-text').value = logo.text || '';
@@ -156,6 +157,8 @@ async function loadAllData() {
         document.getElementById('instagram-url').value = contact.instagram || '';
         document.getElementById('youtube-url').value = contact.youtube || '';
     }
+
+    document.getElementById('theme-mode').value = theme?.mode || 'default';
 }
 
 // ─── Branding ──────────────────────────────────────────────────────────────
@@ -451,6 +454,15 @@ async function saveContact() {
         youtube: document.getElementById('youtube-url').value.trim()
     });
     msg('contact-message', 'Contact info saved!');
+    hideToast();
+}
+
+// ─── Theme ─────────────────────────────────────────────────────────────────
+async function saveTheme() {
+    showToast('Saving theme…');
+    const mode = document.getElementById('theme-mode').value;
+    await dbSet('theme', { mode });
+    msg('theme-message', 'Theme saved! Refresh the website to see it.');
     hideToast();
 }
 

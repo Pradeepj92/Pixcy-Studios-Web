@@ -12,6 +12,26 @@
     --muted: #7a7775;
     --gold: #c9a96e;
     --gold-light: rgba(201, 169, 110, 0.15);
+    --font-display: 'Playfair Display';
+    --font-body: 'Jost';
+}
+
+/* --- HIGH CONTRAST THEME ---
+   Toggled site-wide via the admin panel (Theme tab), which sets
+   document.documentElement[data-theme] in content.js. --gold and
+   --gold-light are intentionally left unset here: the same gold reads
+   fine on both a white and a near-black ground, so only the base
+   surface/text colors and typefaces need to change. */
+:root[data-theme="high-contrast"] {
+    --bg: #14100d;
+    --bg-alt: #1c1712;
+    --bg-pastel-1: #1c1712;
+    --bg-pastel-2: #1c1712;
+    --bg-nav: rgba(20, 16, 13, 0.92);
+    --text: #f3ece1;
+    --muted: #a89b8a;
+    --font-display: 'Bodoni Moda';
+    --font-body: 'Work Sans';
 }
 
 * {
@@ -25,7 +45,7 @@ html {
 }
 
 body {
-    font-family: 'Jost', sans-serif;
+    font-family: var(--font-body), sans-serif;
     background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
@@ -146,7 +166,7 @@ nav {
 }
 
 .hero-title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-display), serif;
     font-size: clamp(4rem, 9vw, 7.5rem);
     font-style: italic;
     line-height: 0.9;
@@ -155,7 +175,7 @@ nav {
 }
 
 .hero-title span {
-    font-family: 'Jost', sans-serif;
+    font-family: var(--font-body), sans-serif;
     font-style: normal;
     font-weight: 400;
     text-transform: uppercase;
@@ -242,7 +262,7 @@ section {
 }
 
 .section-title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-display), serif;
     font-size: 3.5rem;
     font-style: italic;
     color: var(--text);
@@ -296,7 +316,7 @@ section {
 }
 
 .svc-num {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-display), serif;
     font-size: 4rem;
     font-style: italic;
     color: var(--gold);
@@ -423,7 +443,7 @@ section {
 }
 
 .couple-name {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-display), serif;
     font-size: 2rem;
     font-style: italic;
     color: var(--gold);
@@ -815,7 +835,11 @@ section {
 
 .cookie-btn {
     background: var(--gold);
-    color: var(--text);
+    /* Fixed dark ink, not var(--text) — this button's text always sits on
+       the gold accent color, which doesn't change between themes, so its
+       text shouldn't either (var(--text) turns light in high-contrast
+       mode, which would read as light-on-gold). */
+    color: #2a2725;
     border: none;
     padding: 0.6rem 1.2rem;
     font-size: 0.8rem;
@@ -983,7 +1007,7 @@ section {
 }
 
 .modal-title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-display), serif;
     font-size: 3rem;
     font-style: italic;
     color: var(--gold);
