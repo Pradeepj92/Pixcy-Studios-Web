@@ -17,8 +17,18 @@
     --gold-light: rgba(201, 169, 110, 0.15);
     /* Darker than --gold specifically for text set directly on a light
        ground (labels, nav links, headings) — --gold itself is ~2.2:1
-       against white, well under the 4.5:1 WCAG AA minimum for text. */
-    --gold-text: #8c6932;
+       against white, well under the 4.5:1 WCAG AA minimum for text.
+       #8c6932 (an earlier attempt) measured 4.06-4.48:1 depending on which
+       light background it sat on (--bg-alt, --bg-pastel-2, --bg-nav) —
+       still short. This value clears all of them with margin (5.1-6.4:1). */
+    --gold-text: #785a2a;
+    /* Same shade, but NOT re-lightened by the high-contrast theme below.
+       Used only where white text sits directly on a gold background
+       (buttons, the mobile CTA bar) -- that pairing needs a dark gold
+       regardless of the page's own theme, unlike --gold-text which is
+       about gold-vs-page-background and rightly flips back to the
+       lighter gold when the page itself is already dark. */
+    --gold-deep: #785a2a;
     --font-display: 'Playfair Display';
     --font-body: 'Jost';
 }
@@ -239,8 +249,8 @@ nav {
 }
 
 .btn-primary:hover {
-    background: var(--gold);
-    border-color: var(--gold);
+    background: var(--gold-deep);
+    border-color: var(--gold-deep);
     color: #fff;
 }
 
@@ -900,8 +910,12 @@ section {
         right: 0;
         bottom: 0;
         z-index: 998;
-        background: var(--gold);
-        color: var(--bg);
+        background: var(--gold-deep);
+        /* Literal white, not var(--bg): --bg flips to near-black in the
+           high-contrast theme, which combined with --gold-deep (also
+           theme-invariant, deliberately dark) would put dark text on a
+           dark background. */
+        color: #fff;
         text-align: center;
         padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
         font-size: 1rem;
