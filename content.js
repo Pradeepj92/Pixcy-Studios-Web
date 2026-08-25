@@ -89,7 +89,9 @@ async function loadHero() {
     if (data && data.image) {
         const heroImg = document.querySelector('.hero-img img');
         if (heroImg) {
-            heroImg.src = optimize(data.image, 1920);
+            heroImg.src = optimize(data.image, 1200);
+            heroImg.srcset = `${optimize(data.image, 800)} 800w, ${optimize(data.image, 1200)} 1200w, ${optimize(data.image, 1920)} 1920w`;
+            heroImg.sizes = '(max-width: 1024px) 100vw, 55vw';
         }
     }
 }

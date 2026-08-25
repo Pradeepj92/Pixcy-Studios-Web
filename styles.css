@@ -1,6 +1,7 @@
-/* --- PIXCY STUDIOS - IVORY & SOFT GOLD PASTEL THEME --- */
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap');
+/* --- PIXCY STUDIOS - IVORY & SOFT GOLD PASTEL THEME ---
+   Playfair Display / Jost are loaded via a direct <link> in every page's
+   <head> (not an @import here) so the browser's preload scanner can fetch
+   them immediately instead of waiting for this file to parse. */
 
 :root {
     --bg: #ffffff;
@@ -9,7 +10,9 @@
     --bg-pastel-2: #e8ece9; /* Soft grey-green */
     --bg-nav: rgba(230, 230, 230, 0.98); /* 20% grey for header tabs */
     --text: #2a2725;
-    --muted: #7a7775;
+    /* #7a7775 measured ~4.45:1 on white — just under the 4.5:1 AA minimum
+       for normal text. Darkened slightly to clear it with margin. */
+    --muted: #696664;
     --gold: #c9a96e;
     --gold-light: rgba(201, 169, 110, 0.15);
     /* Darker than --gold specifically for text set directly on a light
@@ -385,18 +388,31 @@ section {
     cursor: pointer;
 }
 
+/* transform-only (compositor-friendly) shimmer sweep, rather than animating
+   background-position which paints every frame on the main thread. */
 @keyframes skeleton-shimmer {
-    0% { background-position: -400px 0; }
-    100% { background-position: 400px 0; }
+    100% { transform: translateX(100%); }
 }
 
 .skel-shimmer {
+    position: relative;
+    overflow: hidden;
     background: var(--bg-alt);
-    background-image: linear-gradient(90deg, var(--bg-alt) 0px, rgba(201, 169, 110, 0.12) 40px, var(--bg-alt) 80px);
-    background-size: 400px 100%;
-    animation: skeleton-shimmer 1.4s ease-in-out infinite;
     cursor: default;
     pointer-events: none;
+}
+
+.skel-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.12), transparent);
+    transform: translateX(-100%);
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skel-shimmer::after { animation: none; }
 }
 
 .svc-row.skel-shimmer {
