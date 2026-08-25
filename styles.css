@@ -12,6 +12,10 @@
     --muted: #7a7775;
     --gold: #c9a96e;
     --gold-light: rgba(201, 169, 110, 0.15);
+    /* Darker than --gold specifically for text set directly on a light
+       ground (labels, nav links, headings) — --gold itself is ~2.2:1
+       against white, well under the 4.5:1 WCAG AA minimum for text. */
+    --gold-text: #8c6932;
     --font-display: 'Playfair Display';
     --font-body: 'Jost';
 }
@@ -21,13 +25,17 @@
    document.documentElement[data-theme] in content.js. --gold and
    --gold-light are intentionally left unset here: the same gold reads
    fine on both a white and a near-black ground, so only the base
-   surface/text colors and typefaces need to change. */
+   surface/text colors and typefaces need to change. --gold-text IS
+   overridden back to the regular --gold: the darker text-only shade
+   exists to fix contrast on light grounds, and this theme's grounds
+   are dark, so the original gold already clears 4.5:1 here. */
 :root[data-theme="high-contrast"] {
     --bg: #14100d;
     --bg-alt: #1c1712;
     --bg-pastel-1: #1c1712;
     --bg-pastel-2: #1c1712;
     --bg-nav: rgba(20, 16, 13, 0.92);
+    --gold-text: #c9a96e;
     --text: #f3ece1;
     --muted: #a89b8a;
     --font-display: 'Bodoni Moda';
@@ -79,7 +87,7 @@ nav {
 }
 
 .logo span {
-    color: var(--gold);
+    color: var(--gold-text);
 }
 
 .header-socials {
@@ -90,7 +98,7 @@ nav {
 }
 
 .header-social-link {
-    color: var(--gold);
+    color: var(--gold-text);
     text-decoration: none;
     font-size: 0.7rem;
     text-transform: uppercase;
@@ -117,11 +125,11 @@ nav {
 }
 
 .nav-links a:hover, .nav-links a.active {
-    color: var(--gold);
+    color: var(--gold-text);
 }
 
 .admin-link {
-    color: var(--gold) !important;
+    color: var(--gold-text) !important;
 }
 
 .menu-toggle {
@@ -171,7 +179,7 @@ nav {
     font-style: italic;
     line-height: 0.9;
     margin-bottom: 2rem;
-    color: var(--gold);
+    color: var(--gold-text);
 }
 
 .hero-title span {
@@ -257,7 +265,7 @@ section {
     font-size: 0.8rem;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-text);
     margin-bottom: 1rem;
 }
 
@@ -319,7 +327,7 @@ section {
     font-family: var(--font-display), serif;
     font-size: 4rem;
     font-style: italic;
-    color: var(--gold);
+    color: var(--gold-text);
     opacity: 0.8;
 }
 
@@ -349,7 +357,7 @@ section {
     font-size: 1rem;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-text);
     margin-bottom: 4rem;
     display: flex;
     align-items: center;
@@ -446,7 +454,7 @@ section {
     font-family: var(--font-display), serif;
     font-size: 2rem;
     font-style: italic;
-    color: var(--gold);
+    color: var(--gold-text);
     margin-bottom: 0.5rem;
 }
 
@@ -550,7 +558,7 @@ section {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    color: var(--gold);
+    color: var(--gold-text);
     font-weight: 500;
 }
 
@@ -670,12 +678,25 @@ section {
     font-size: 2rem;
 }
 
-.info-item h4 {
-    color: var(--gold);
+.info-item h3 {
+    color: var(--gold-text);
     font-size: 0.9rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
+}
+
+/* Visually hidden but readable by screen readers/assistive tech */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .info-item p, .info-item a {
@@ -684,7 +705,7 @@ section {
 }
 
 .info-item a:hover {
-    color: var(--gold);
+    color: var(--gold-text);
 }
 
 .social-links {
@@ -706,7 +727,7 @@ section {
 
 .social-btn:hover {
     border-color: var(--gold);
-    color: var(--gold);
+    color: var(--gold-text);
 }
 
 .contact-form {
@@ -1003,14 +1024,14 @@ section {
 
 .modal-close:hover {
     border-color: var(--gold);
-    color: var(--gold);
+    color: var(--gold-text);
 }
 
 .modal-title {
     font-family: var(--font-display), serif;
     font-size: 3rem;
     font-style: italic;
-    color: var(--gold);
+    color: var(--gold-text);
     text-align: center;
     margin-bottom: 3rem;
 }
@@ -1432,7 +1453,7 @@ footer {
     .footer-socials,
     .footer-socials a,
     .social-btn,
-    .info-item h4,
+    .info-item h3,
     .cookie-banner p {
         font-size: 1rem;
     }

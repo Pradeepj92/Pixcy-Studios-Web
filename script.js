@@ -12,15 +12,19 @@ function setupNavigation() {
 
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
-            navLinksContainer.classList.toggle('active');
+            const isOpen = navLinksContainer.classList.toggle('active');
             menuToggle.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isOpen);
         });
     }
 
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             navLinksContainer.classList.remove('active');
-            if (menuToggle) menuToggle.classList.remove('active');
+            if (menuToggle) {
+                menuToggle.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
         });
     });
 
