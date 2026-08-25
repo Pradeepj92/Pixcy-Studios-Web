@@ -58,7 +58,10 @@ async function loadTheme() {
 // Non-Cloudinary URLs (Unsplash, YouTube thumbnails, etc.) are returned unchanged.
 function optimize(url, width) {
     if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
-    return url.replace('/upload/', `/upload/f_auto,q_auto,w_${width}/`);
+    // q_auto:eco pushes compression harder than plain q_auto for a
+    // meaningful size cut (PageSpeed flagged ~35% wasted bytes on these);
+    // visually indistinguishable at the display sizes these are used at.
+    return url.replace('/upload/', `/upload/f_auto,q_auto:eco,w_${width}/`);
 }
 
 // Fisher-Yates shuffle
