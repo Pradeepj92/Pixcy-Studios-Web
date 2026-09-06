@@ -571,10 +571,11 @@ var C = {
         { title: 'Pre / Post Wedding', note: 'Sample album',        cover: cl('v1783059159/ppnd9grgvtqf2ayqhm0k', 300), pdf: '' },
         { title: 'Couple Portrait',   note: 'Sample album',         cover: cl('v1783059227/o8pcces14ltlypwefhqb', 300), pdf: '' },
     ],
-    // Matches the studio's real package range (₹72k-₹2L, occasionally above)
-    // -- a ₹4L+ top band read as a much higher-end studio than this actually is.
+    // Matches the studio's real package range. No "under" band: the
+    // lowest package is 72,000, so a floor option would just collect leads
+    // below what's actually offered.
     budgets: [
-        'Under 75,000', '75,000 - 1,25,000', '1,25,000 - 2,00,000',
+        '72,000 - 1,00,000', '1,00,000 - 1,50,000', '1,50,000 - 2,00,000',
         'Above 2,00,000', 'Not sure yet',
     ],
     reviews: [
