@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Photography &amp; Films | Pixcy Studios Chennai</title>
+    <meta name="description" content="Wedding photography and cinematic wedding films in Chennai by Pixcy Studios. Watch a film, check whether your date is open, and see our albums and reviews.">
+
+    <!-- Paid-traffic landing page. Deliberately out of the index so it doesn't
+         compete with the homepage for "wedding photography chennai". -->
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="https://pixcystudios.in/wedding/">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Your Wedding Deserves More Than Just Photographs">
+    <meta property="og:description" content="Wedding photography and films crafted around the people, emotions and moments you'll want to relive. Chennai &amp; South India.">
+    <meta property="og:image" content="https://res.cloudinary.com/dimxughun/image/upload/f_auto,q_auto,w_1200,h_630,c_fill,g_faces/v1783058778/ipdk5mzps6sfbc7qojts.jpg">
+    <meta property="og:url" content="https://pixcystudios.in/wedding/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+    <link rel="preconnect" href="https://i.ytimg.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" fetchpriority="high" href="https://i.ytimg.com/vi/1pKmZ3KyCLU/maxresdefault.jpg">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&display=swap" rel="stylesheet"></noscript>
+
+    <!-- Tracking IDs. Drop the Meta Pixel ID in and the Pixel switches on;
+         an empty string leaves it off. Nothing loads before cookie consent. -->
+    <script>
+        window.GA_MEASUREMENT_ID = 'G-WCF1MEDYNR';
+        window.CLARITY_ID = 'y5cxyy4888';
+        window.META_PIXEL_ID = '';
+    </script>
+
+    <style>
+    /* ══════════════════════════════════════════════════════════════════
+       Pixcy Studios — wedding landing page (Meta ads)
+
+       Standalone by design: it does not load styles.css, because the main
+       site's ivory-and-gold system fights this page's job. One typeface
+       (Fraunces, variable, optical-size axis) carries the italic display
+       headline and the 11px uppercase labels alike.
+
+       Palette is "Oxblood" — kanjivaram maroon and brass. Every colour is
+       a token on :root so the whole page can be re-skinned by swapping
+       this one block.
+       ══════════════════════════════════════════════════════════════════ */
+
+    :root {
+        --bg:          #4E111D;
+        --bg-deep:     #3B0B14;
+        --surface:     rgba(255, 255, 255, 0.06);
+        --surface-2:   rgba(255, 255, 255, 0.09);
+        --field:       rgba(0, 0, 0, 0.28);
+        --ink:         #F7EFE2;
+        --dim:         #D9B693;
+        --accent:      #E0AC57;
+        --on-accent:   #380B14;
+        --line:        rgba(224, 172, 87, 0.36);
+        --line-soft:   rgba(224, 172, 87, 0.16);
+        --whatsapp:    #128C4A;
+        --danger:      #FFB4A8;
+
+        --font: 'Fraunces', Georgia, 'Times New Roman', serif;
+        --shell: 560px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font);
+        font-optical-sizing: auto;
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    /* Focus is visible on every interactive thing, on a dark ground. */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    .shell { max-width: var(--shell); margin: 0 auto; padding: 0 20px; }
+
+    .label {
+        font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+        font-weight: 700; color: var(--accent); font-variation-settings: 'opsz' 9;
+        margin: 0 0 10px;
+    }
+
+    /* ── Top bar ── */
+    .bar {
+        display: flex; align-items: center; justify-content: space-between;
+        max-width: var(--shell); margin: 0 auto; padding: 18px 20px 14px;
+    }
+    .mark {
+        font-size: 13px; letter-spacing: 0.26em; font-weight: 700;
+        color: var(--ink); text-decoration: none; font-variation-settings: 'opsz' 9;
+    }
+    .mark i { color: var(--accent); font-style: normal; }
+    .chip {
+        font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;
+        color: var(--accent); border: 1px solid var(--line); border-radius: 20px;
+        padding: 5px 11px; font-variation-settings: 'opsz' 9;
+    }
+
+    /* ── Headline ── */
+    h1 {
+        font-style: italic; font-weight: 400;
+        font-size: clamp(2rem, 8.2vw, 2.9rem); line-height: 1.08;
+        letter-spacing: -0.015em; margin: 6px 0 12px;
+        text-wrap: balance; font-variation-settings: 'opsz' 144;
+    }
+    .sub { color: var(--dim); font-size: 1rem; line-height: 1.65; margin: 0 0 22px; }
+
+    /* ── The one film shown before the gate ── */
+    .film {
+        position: relative; width: 100%; padding: 0; border: none; background: var(--bg-deep);
+        border-radius: 6px; overflow: hidden; cursor: pointer; display: block;
+        font-family: inherit; color: inherit;
+        transition: transform .35s cubic-bezier(.2,.7,.2,1);
+    }
+    .film:hover { transform: translateY(-3px); }
+    .film img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+    .film::after {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,.12) 40%, rgba(0,0,0,.75) 100%);
+        pointer-events: none;
+    }
+    .play {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        width: 62px; height: 62px; border-radius: 50%; z-index: 2;
+        background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.6);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        display: flex; align-items: center; justify-content: center;
+        transition: background .3s, border-color .3s;
+    }
+    .film:hover .play { background: var(--accent); border-color: var(--accent); }
+    .play::after {
+        content: ''; width: 0; height: 0; margin-left: 5px;
+        border-left: 16px solid #fff;
+        border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+    }
+    .film:hover .play::after { border-left-color: var(--on-accent); }
+    .film-cap {
+        position: absolute; left: 14px; bottom: 11px; z-index: 2;
+        font-size: 11px; letter-spacing: 0.13em; text-transform: uppercase;
+        font-weight: 600; color: #fff; font-variation-settings: 'opsz' 9;
+        text-shadow: 0 1px 6px rgba(0,0,0,.6);
+    }
+
+    /* ── Lead form — the point of the page ── */
+    .card {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 8px; padding: 20px; margin-top: 22px;
+    }
+    .card h2 {
+        font-style: italic; font-weight: 400; font-size: 1.4rem; margin: 0 0 4px;
+        font-variation-settings: 'opsz' 144;
+    }
+    .card > p { color: var(--dim); font-size: 0.9rem; margin: 0 0 16px; }
+
+    form { display: flex; flex-direction: column; gap: 13px; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field label {
+        font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+        font-weight: 600; color: var(--dim); font-variation-settings: 'opsz' 9;
+    }
+    /* 16px minimum — anything smaller and iOS zooms the viewport on focus. */
+    .field input, .field select {
+        font-family: inherit; font-size: 16px; color: var(--ink);
+        background: var(--field); border: 1px solid var(--line-soft);
+        border-radius: 4px; padding: 13px 12px; width: 100%;
+        transition: border-color .25s;
+        -webkit-appearance: none; appearance: none;
+    }
+    .field select {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23D9B693' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 13px center; background-size: 11px;
+        padding-right: 34px;
+    }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
+    .field input.invalid, .field select.invalid { border-color: var(--danger); }
+    .field option { background: var(--bg-deep); color: var(--ink); }
+    .err { color: var(--danger); font-size: 0.8rem; min-height: 1em; }
+
+    .row { display: flex; gap: 10px; }
+    .row .field { flex: 1; min-width: 0; }
+
+    .btn {
+        font-family: inherit; font-size: 13px; font-weight: 700;
+        letter-spacing: 0.15em; text-transform: uppercase;
+        background: var(--accent); color: var(--on-accent);
+        border: 1px solid var(--accent); border-radius: 4px;
+        padding: 17px 20px; width: 100%; cursor: pointer;
+        font-variation-settings: 'opsz' 9; transition: filter .25s, transform .25s;
+    }
+    .btn:hover:not(:disabled) { filter: brightness(1.09); }
+    .btn:disabled { opacity: .65; cursor: default; }
+    .btn-ghost {
+        background: transparent; color: var(--ink); border-color: var(--line);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-wa { background: var(--whatsapp); border-color: var(--whatsapp); color: #fff; }
+
+    .trust {
+        display: flex; align-items: center; justify-content: center; gap: 7px;
+        font-size: 0.82rem; color: var(--dim); margin: 2px 0 0;
+    }
+    .trust b { color: var(--accent); letter-spacing: 2px; font-weight: 400; }
+    .form-err { color: var(--danger); font-size: 0.88rem; text-align: center; margin: 0; }
+
+    /* ── Locked strip ── */
+    .locked { margin-top: 20px; }
+    .locked-imgs { display: flex; gap: 7px; margin-bottom: 10px; }
+    .locked-imgs img {
+        flex: 1; min-width: 0; height: 66px; object-fit: cover; border-radius: 4px;
+        filter: blur(5px) saturate(.5) brightness(.62);
+    }
+    .locked-cap {
+        display: flex; align-items: center; justify-content: center; gap: 7px;
+        font-size: 0.84rem; color: var(--dim); margin: 0;
+    }
+    .locked-cap svg { width: 13px; height: 13px; stroke: var(--accent); fill: none; stroke-width: 2; flex: none; }
+
+    /* ── Unlocked ── */
+    #unlocked[hidden] { display: none; }
+    .done { text-align: center; padding: 4px 0 6px; }
+    .tick {
+        width: 54px; height: 54px; border-radius: 50%; border: 1px solid var(--accent);
+        display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;
+    }
+    .tick svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 2.4; }
+    .done h2 {
+        font-style: italic; font-weight: 400; font-size: 1.65rem; margin: 0 0 7px;
+        font-variation-settings: 'opsz' 144;
+    }
+    .done p { color: var(--dim); margin: 0 auto; max-width: 34ch; font-size: 0.95rem; }
+
+    .sec { margin-top: 34px; }
+
+    .films-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .films-2 .film img { aspect-ratio: 4/3; }
+    .films-2 .play { width: 44px; height: 44px; }
+    .films-2 .play::after { border-left-width: 12px; border-top-width: 7.5px; border-bottom-width: 7.5px; margin-left: 4px; }
+    .films-2 .film-cap { font-size: 10px; left: 10px; bottom: 8px; }
+    @media (max-width: 380px) { .films-2 { grid-template-columns: 1fr; } }
+
+    .albums { display: flex; flex-direction: column; gap: 10px; }
+    .album {
+        display: flex; align-items: center; gap: 13px; text-decoration: none;
+        background: var(--surface); border: 1px solid var(--line-soft);
+        border-radius: 6px; padding: 10px; color: inherit;
+        transition: border-color .3s, transform .3s;
+    }
+    .album:hover { border-color: var(--accent); transform: translateX(3px); }
+    .album img { width: 74px; height: 56px; object-fit: cover; border-radius: 4px; flex: none; }
+    .album-txt { min-width: 0; }
+    .album-txt b { display: block; font-size: 1rem; font-weight: 600; }
+    .album-txt span { font-size: 0.8rem; color: var(--dim); }
+    .album .pdf {
+        margin-left: auto; flex: none; font-size: 10px; font-weight: 700;
+        letter-spacing: 0.12em; color: var(--accent);
+        border: 1px solid var(--line); border-radius: 3px; padding: 6px 9px;
+        font-variation-settings: 'opsz' 9;
+    }
+
+    .review {
+        border-top: 1px solid var(--line-soft); padding-top: 14px; margin-top: 14px;
+    }
+    .review:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+    .review .stars { color: var(--accent); font-size: 0.8rem; letter-spacing: 2px; }
+    .review p { margin: 5px 0 5px; font-size: 0.93rem; line-height: 1.6; }
+    .review cite {
+        font-style: normal; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: var(--dim); font-variation-settings: 'opsz' 9;
+    }
+
+    /* ── Footer ── */
+    footer {
+        background: var(--bg-deep); margin-top: 44px; text-align: center;
+        padding: 34px 20px calc(34px + env(safe-area-inset-bottom, 0px));
+        border-top: 1px solid var(--line-soft);
+    }
+    footer .mark { margin-bottom: 16px; display: inline-block; }
+    .links { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .links a {
+        color: var(--dim); text-decoration: none; font-size: 11px;
+        letter-spacing: 0.16em; text-transform: uppercase; padding: 11px 12px;
+        font-variation-settings: 'opsz' 9;
+    }
+    .links a:hover { color: var(--accent); }
+    footer small { color: var(--dim); opacity: .75; font-size: 0.8rem; }
+
+    /* ── Sticky bar — WhatsApp always one tap away while scrolling ── */
+    .sticky {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 900;
+        display: grid; grid-template-columns: 1fr 1fr;
+        transform: translateY(110%); transition: transform .3s cubic-bezier(.2,.7,.2,1);
+        box-shadow: 0 -6px 26px rgba(0,0,0,.4);
+    }
+    .sticky.show { transform: none; }
+    .sticky a {
+        text-align: center; text-decoration: none; font-size: 14px; font-weight: 700;
+        letter-spacing: 0.11em; text-transform: uppercase; font-variation-settings: 'opsz' 9;
+        padding: 15px 8px calc(15px + env(safe-area-inset-bottom, 0px));
+    }
+    .sticky .s-date { background: var(--accent); color: var(--on-accent); }
+    .sticky .s-wa { background: var(--whatsapp); color: #fff; }
+    .sticky.one-up { grid-template-columns: 1fr; }
+    @media (prefers-reduced-motion: reduce) { .sticky { transition: none; } }
+
+    /* ── Video modal ── */
+    .modal {
+        display: none; position: fixed; inset: 0; z-index: 3000;
+        background: rgba(20, 4, 9, 0.95); padding: 20px;
+        align-items: center; justify-content: center;
+    }
+    .modal.open { display: flex; }
+    .modal-inner { width: 100%; max-width: 940px; position: relative; }
+    .modal-close {
+        position: absolute; top: -52px; right: 0; width: 42px; height: 42px;
+        border-radius: 50%; background: transparent; color: #fff; cursor: pointer;
+        border: 1px solid rgba(255,255,255,.4); font-size: 22px; line-height: 1;
+        display: flex; align-items: center; justify-content: center; font-family: var(--font);
+    }
+    .modal-close:hover { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+    .modal-frame { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 6px; overflow: hidden; }
+    .modal-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    /* ── Cookie banner ── */
+    .cookie {
+        position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 1200;
+        max-width: 460px; margin: 0 auto; background: var(--bg-deep);
+        border: 1px solid var(--line); border-radius: 8px; padding: 18px;
+        box-shadow: 0 18px 50px rgba(0,0,0,.5);
+    }
+    .cookie[hidden] { display: none; }
+    .cookie p { font-size: 0.85rem; margin: 0 0 14px; color: var(--dim); line-height: 1.55; }
+    .cookie a { color: var(--accent); }
+    .cookie-row { display: flex; gap: 10px; justify-content: flex-end; }
+    .cookie-row button {
+        font-family: inherit; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+        text-transform: uppercase; padding: 11px 16px; border-radius: 3px; cursor: pointer;
+        font-variation-settings: 'opsz' 9;
+    }
+    .c-yes { background: var(--accent); color: var(--on-accent); border: 1px solid var(--accent); }
+    .c-no { background: transparent; color: var(--dim); border: 1px solid var(--line-soft); }
+    body.has-sticky .cookie { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+
+    .sr-only {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+        overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    </style>
+</head>
+<body>
+
+<header class="bar">
+    <a href="/" class="mark">PIXCY<i>STUDIOS</i></a>
+    <span class="chip" id="area">Chennai</span>
+</header>
+
+<main class="shell" id="top">
+
+    <!-- ── Gate: headline, one film, the form ── -->
+    <section id="gate">
+        <h1 id="headline">Your Wedding Deserves More Than Just Photographs.</h1>
+        <p class="sub" id="subtext">Wedding photography and films crafted around the people, emotions and moments you&rsquo;ll want to relive.</p>
+
+        <button class="film" type="button" id="lead-film" data-video="1pKmZ3KyCLU" data-title="Tamil Wedding Teaser">
+            <img id="lead-film-thumb" src="https://i.ytimg.com/vi/1pKmZ3KyCLU/maxresdefault.jpg"
+                 alt="Still from a Tamil wedding film by Pixcy Studios" fetchpriority="high"
+                 onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/1pKmZ3KyCLU/hqdefault.jpg'">
+            <span class="play" aria-hidden="true"></span>
+            <span class="film-cap" id="lead-film-cap">Watch &mdash; Tamil Wedding Film</span>
+        </button>
+
+        <div class="card">
+            <h2 id="form-heading">Is your date still open?</h2>
+            <p id="form-sub">Five quick things. We&rsquo;ll confirm on WhatsApp &mdash; and the rest of our work opens right here.</p>
+
+            <form id="lead-form" novalidate>
+                <div class="field">
+                    <label for="f-name">Your name</label>
+                    <input type="text" id="f-name" name="name" autocomplete="name" required>
+                    <span class="err" id="e-name"></span>
+                </div>
+                <div class="field">
+                    <label for="f-phone">WhatsApp number</label>
+                    <input type="tel" id="f-phone" name="phone" inputmode="numeric"
+                           autocomplete="tel" placeholder="10-digit mobile number" required>
+                    <span class="err" id="e-phone"></span>
+                </div>
+                <div class="row">
+                    <div class="field">
+                        <label for="f-date">Wedding date</label>
+                        <input type="date" id="f-date" name="date" required>
+                        <span class="err" id="e-date"></span>
+                    </div>
+                    <div class="field">
+                        <label for="f-city">City</label>
+                        <input type="text" id="f-city" name="city" placeholder="Chennai" required>
+                        <span class="err" id="e-city"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="f-budget">Approximate budget</label>
+                    <select id="f-budget" name="budget" required></select>
+                    <span class="err" id="e-budget"></span>
+                </div>
+                <button type="submit" class="btn" id="submit">Check my wedding date</button>
+                <p class="form-err" id="form-error" hidden></p>
+                <p class="trust"><b>&#9733;&#9733;&#9733;&#9733;&#9733;</b> <span id="trust-text">Rated 5.0 on Google</span></p>
+            </form>
+        </div>
+
+        <div class="locked" id="locked">
+            <div class="locked-imgs" id="locked-imgs" aria-hidden="true"></div>
+            <p class="locked-cap">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                <span id="locked-text">More films, sample albums and reviews</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- ── Reward: unlocked after the form is sent ── -->
+    <section id="unlocked" hidden aria-live="polite">
+        <div class="done">
+            <div class="tick" aria-hidden="true">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h2 id="done-heading">We have your date.</h2>
+            <p id="done-text">Pradeep will confirm on WhatsApp shortly. Everything&rsquo;s open below.</p>
+        </div>
+
+        <div class="sec" id="sec-films">
+            <p class="label">More wedding films</p>
+            <div class="films-2" id="more-films"></div>
+        </div>
+
+        <div class="sec" id="sec-albums" hidden>
+            <p class="label">Sample albums</p>
+            <div class="albums" id="albums"></div>
+        </div>
+
+        <div class="sec">
+            <p class="label">What couples say</p>
+            <div id="reviews"></div>
+        </div>
+
+        <div class="sec">
+            <a class="btn btn-wa" id="done-wa" href="#" target="_blank" rel="noopener"
+               style="display:block;text-align:center;text-decoration:none;">Continue on WhatsApp</a>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <a href="/" class="mark">PIXCY<i>STUDIOS</i></a>
+    <nav class="links">
+        <a href="https://www.instagram.com/pixcystudios/" target="_blank" rel="noopener" data-social="instagram">Instagram</a>
+        <a href="https://www.youtube.com/@pixcystudios5348" target="_blank" rel="noopener" data-social="youtube">YouTube</a>
+        <a href="#" class="wa" data-wa="footer" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="/privacy-policy.html">Privacy</a>
+    </nav>
+    <small>&copy; 2024 Pixcy Studios by Pradeep Bernard &middot; Chennai, Tamil Nadu</small>
+</footer>
+
+<div class="sticky" id="sticky">
+    <a href="#top" class="s-date" id="s-date">Check my date</a>
+    <a href="#" class="s-wa wa" data-wa="sticky" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Wedding film">
+    <div class="modal-inner">
+        <button class="modal-close" id="modal-close" aria-label="Close video">&times;</button>
+        <div class="modal-frame">
+            <iframe id="modal-frame" title="Wedding film" allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="cookie" id="cookie" hidden>
+    <p>We use cookies for site analytics and ad measurement. <a href="/privacy-policy.html">Read our privacy policy</a></p>
+    <div class="cookie-row">
+        <button type="button" class="c-no" id="c-no">Decline</button>
+        <button type="button" class="c-yes" id="c-yes">Accept</button>
+    </div>
+</div>
+
+<script src="/analytics.js?v=5"></script>
+<script src="/tracking.js?v=1"></script>
+<script>
+    // Cookie banner. analytics.js and tracking.js both bail out without
+    // consent, so accepting reloads to let them run.
+    (function () {
+        var banner = document.getElementById('cookie');
+        var choice = null;
+        try { choice = localStorage.getItem('cookieConsent'); } catch (e) { /* storage blocked */ }
+        if (choice) return;
+        banner.hidden = false;
+        document.getElementById('c-yes').addEventListener('click', function () {
+            try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+            banner.hidden = true;
+            location.reload();
+        });
+        document.getElementById('c-no').addEventListener('click', function () {
+            try { localStorage.setItem('cookieConsent', 'declined'); } catch (e) {}
+            banner.hidden = true;
+        });
+    })();
+</script>
+
+<script type="module">
+import { dbGet, insertLead } from '/config.js?v=4';
+
+/* ── Defaults ────────────────────────────────────────────────────────────
+   Everything below is overridable from the Wedding LP tab in /admin.html
+   (Supabase section `wedding_page`), so copy, films, albums, budget bands
+   and the Google Sheet webhook can all change without a deploy. */
+
+var CLOUD = 'https://res.cloudinary.com/dimxughun/image/upload/';
+function cl(publicId, w) { return CLOUD + 'f_auto,q_auto:eco,w_' + w + '/' + publicId + '.jpg'; }
+function ytThumb(id) { return 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg'; }
+
+var C = {
+    whatsapp: '919940056549',
+    whatsappText: 'Hi Pixcy Studios! I am looking for wedding photography.',
+    leadFilm: { id: '1pKmZ3KyCLU', title: 'Tamil Wedding Film' },
+    moreFilms: [
+        { id: 'V_o9TWFkwro', title: 'Christian Wedding' },
+        { id: 'jYslLh4yGcs', title: 'Nikkah Highlights' },
+    ],
+    // Album PDFs are added in admin. Any album without a link is not shown,
+    // so the live page never renders a dead "View Album" button.
+    albums: [
+        { title: 'Album Design',      note: 'Sample wedding album', cover: cl('v1783059073/ruwh9uvjs79zh0ivmwi0', 300), pdf: '' },
+        { title: 'Pre / Post Wedding', note: 'Sample album',        cover: cl('v1783059159/ppnd9grgvtqf2ayqhm0k', 300), pdf: '' },
+        { title: 'Couple Portrait',   note: 'Sample album',         cover: cl('v1783059227/o8pcces14ltlypwefhqb', 300), pdf: '' },
+    ],
+    budgets: [
+        'Under 1,00,000', '1,00,000 - 1,50,000', '1,50,000 - 2,50,000',
+        '2,50,000 - 4,00,000', 'Above 4,00,000', 'Not sure yet',
+    ],
+    reviews: [
+        { text: 'Really Loved Their Work, They are so professional and friendly to the customers. Very much happy about the output of our Wedding and Reception Albums and Videos. Especially their Candid Photography is Awesome.', author: 'Ajju Suriya' },
+        { text: 'The wedding photos were outstanding! The photographer perfectly captured all the important moments. They were professional, attentive, and made sure we got every shot we wanted.', author: 'Saravanasundaram' },
+        { text: 'I have booked Pixcy studios twice had great experience with them. The way of working and approach is great, kind and truthful for their work.', author: 'Sivaram Bharathi' },
+    ],
+    sheetWebhook: '',
+    sheetSecret: '',
+};
+
+function txt(id, val) { if (val) { var el = document.getElementById(id); if (el) el.textContent = val; } }
+
+function applyOverrides(p) {
+    if (!p) return;
+    txt('area', p.area);
+    txt('headline', p.headline);
+    txt('subtext', p.subtext);
+    txt('form-heading', p.formHeading);
+    txt('form-sub', p.formSub);
+    txt('trust-text', p.trustText);
+    txt('locked-text', p.lockedText);
+    txt('done-heading', p.doneHeading);
+    txt('done-text', p.doneText);
+
+    if (p.leadFilm && p.leadFilm.id) C.leadFilm = p.leadFilm;
+    if (Array.isArray(p.moreFilms) && p.moreFilms.length) C.moreFilms = p.moreFilms;
+    if (Array.isArray(p.albums) && p.albums.length) C.albums = p.albums;
+    if (Array.isArray(p.budgets) && p.budgets.length) C.budgets = p.budgets;
+    if (Array.isArray(p.reviews) && p.reviews.length) C.reviews = p.reviews;
+    if (p.whatsapp) C.whatsapp = p.whatsapp;
+    if (p.whatsappText) C.whatsappText = p.whatsappText;
+    if (p.sheetWebhook) C.sheetWebhook = p.sheetWebhook;
+    if (p.sheetSecret) C.sheetSecret = p.sheetSecret;
+}
+
+/* ── WhatsApp ─────────────────────────────────────────────────────────── */
+function waUrl(text) {
+    return 'https://wa.me/' + C.whatsapp + '?text=' + encodeURIComponent(text || C.whatsappText);
+}
+function wireWhatsApp() {
+    document.querySelectorAll('a.wa').forEach(function (a) {
+        a.href = waUrl();
+        a.addEventListener('click', function () {
+            window.pixcyTrack('Contact', { method: 'whatsapp', placement: a.dataset.wa || 'unknown' });
+        });
+    });
+}
+
+/* ── Films ────────────────────────────────────────────────────────────── */
+var modal = document.getElementById('modal');
+var frame = document.getElementById('modal-frame');
+
+function openFilm(id, title) {
+    frame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modal-close').focus();
+    window.pixcyTrack('ViewContent', { content_type: 'video', content_name: title, video_id: id });
+}
+function closeFilm() {
+    modal.classList.remove('open');
+    frame.src = '';
+    document.body.style.overflow = '';
+}
+
+function renderLeadFilm() {
+    var btn = document.getElementById('lead-film');
+    var img = document.getElementById('lead-film-thumb');
+    btn.dataset.video = C.leadFilm.id;
+    btn.dataset.title = C.leadFilm.title;
+    img.src = ytThumb(C.leadFilm.id);
+    img.onerror = function () { this.onerror = null; this.src = 'https://i.ytimg.com/vi/' + C.leadFilm.id + '/hqdefault.jpg'; };
+    document.getElementById('lead-film-cap').textContent = 'Watch — ' + C.leadFilm.title;
+    btn.addEventListener('click', function () { openFilm(C.leadFilm.id, C.leadFilm.title); });
+}
+
+function renderMoreFilms() {
+    var wrap = document.getElementById('more-films');
+    wrap.innerHTML = C.moreFilms.map(function (f) {
+        return '<button class="film" type="button" data-video="' + f.id + '" data-title="' + f.title + '">' +
+            '<img src="' + ytThumb(f.id) + '" alt="' + f.title + '" loading="lazy" ' +
+            'onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + f.id + '/hqdefault.jpg\'">' +
+            '<span class="play" aria-hidden="true"></span>' +
+            '<span class="film-cap">' + f.title + '</span></button>';
+    }).join('');
+    wrap.querySelectorAll('.film').forEach(function (b) {
+        b.addEventListener('click', function () { openFilm(b.dataset.video, b.dataset.title); });
+    });
+}
+
+/* ── Albums ───────────────────────────────────────────────────────────── */
+function renderAlbums() {
+    var live = C.albums.filter(function (a) { return a.pdf; });
+    var sec = document.getElementById('sec-albums');
+    if (!live.length) { sec.hidden = true; return; }
+    sec.hidden = false;
+    document.getElementById('albums').innerHTML = live.map(function (a) {
+        return '<a class="album" href="' + a.pdf + '" target="_blank" rel="noopener" data-album="' + a.title + '">' +
+            (a.cover ? '<img src="' + a.cover + '" alt="" loading="lazy">' : '') +
+            '<span class="album-txt"><b>' + a.title + '</b><span>' + (a.note || 'Sample album') + '</span></span>' +
+            '<span class="pdf">PDF</span></a>';
+    }).join('');
+    document.querySelectorAll('#albums .album').forEach(function (a) {
+        a.addEventListener('click', function () {
+            window.pixcyTrack('ViewContent', { content_type: 'album', content_name: a.dataset.album });
+        });
+    });
+}
+
+/* ── Locked strip + reviews ───────────────────────────────────────────── */
+function renderLocked() {
+    document.getElementById('locked-imgs').innerHTML = [
+        ytThumb(C.moreFilms[0] ? C.moreFilms[0].id : C.leadFilm.id),
+        C.albums[0] ? C.albums[0].cover : '',
+        C.albums[2] ? C.albums[2].cover : '',
+    ].filter(Boolean).map(function (src) {
+        return '<img src="' + src + '" alt="" loading="lazy">';
+    }).join('');
+
+    var n = C.albums.filter(function (a) { return a.pdf; }).length;
+    document.getElementById('locked-text').textContent =
+        C.moreFilms.length + ' more films' + (n ? ' · ' + n + ' album PDFs' : '') +
+        ' · ' + C.reviews.length + ' reviews';
+}
+
+function renderReviews() {
+    document.getElementById('reviews').innerHTML = C.reviews.map(function (r) {
+        return '<div class="review"><div class="stars" aria-label="5 out of 5 stars">' +
+            '★★★★★</div><p>' + r.text + '</p>' +
+            '<cite>' + r.author + (r.source ? ' · ' + r.source : ' · Google Review') + '</cite></div>';
+    }).join('');
+}
+
+function renderBudgets() {
+    var sel = document.getElementById('f-budget');
+    sel.innerHTML = '<option value="">Select a range</option>' +
+        C.budgets.map(function (b) { return '<option value="' + b + '">' + b + '</option>'; }).join('');
+}
+
+/* ── Form ─────────────────────────────────────────────────────────────── */
+function setErr(name, msg) {
+    var input = document.getElementById('f-' + name);
+    var slot = document.getElementById('e-' + name);
+    if (msg) {
+        input.classList.add('invalid');
+        input.setAttribute('aria-invalid', 'true');
+        slot.textContent = msg;
+    } else {
+        input.classList.remove('invalid');
+        input.removeAttribute('aria-invalid');
+        slot.textContent = '';
+    }
+}
+
+function normalisePhone(raw) {
+    var d = String(raw).replace(/\D/g, '');
+    if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2);
+    if (d.length === 11 && d.charAt(0) === '0') d = d.slice(1);
+    return d;
+}
+
+// Google Sheet copy. Fire-and-forget with no-cors: Apps Script web apps don't
+// send CORS headers, and the lead is already safe in Supabase by this point,
+// so a failure here must never block the visitor.
+function pushToSheet(row) {
+    if (!C.sheetWebhook) return;
+    try {
+        fetch(C.sheetWebhook, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(row),
+        }).catch(function () {});
+    } catch (e) { /* never block the visitor on the spreadsheet copy */ }
+}
+
+function wireForm() {
+    var form = document.getElementById('lead-form');
+    var submit = document.getElementById('submit');
+    var formError = document.getElementById('form-error');
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        formError.hidden = true;
+
+        var name = document.getElementById('f-name').value.trim();
+        var phone = normalisePhone(document.getElementById('f-phone').value);
+        var date = document.getElementById('f-date').value;
+        var city = document.getElementById('f-city').value.trim();
+        var budget = document.getElementById('f-budget').value;
+
+        var ok = true;
+        if (!name) { setErr('name', 'Please tell us your name.'); ok = false; } else setErr('name', '');
+        if (!/^\d{10}$/.test(phone)) { setErr('phone', 'Enter a 10-digit mobile number.'); ok = false; } else setErr('phone', '');
+        if (!date) { setErr('date', 'Pick your date.'); ok = false; } else setErr('date', '');
+        if (!city) { setErr('city', 'Which city?'); ok = false; } else setErr('city', '');
+        if (!budget) { setErr('budget', 'Choose a range.'); ok = false; } else setErr('budget', '');
+        if (!ok) { form.querySelector('.invalid').focus(); return; }
+
+        submit.disabled = true;
+        submit.textContent = 'Checking…';
+
+        var message = 'Wedding date: ' + date + ' | Location: ' + city + ' | Budget: ' + budget;
+
+        try {
+            await insertLead({
+                name: name,
+                phone: phone,
+                email: null,
+                service: 'Wedding Photography',
+                message: message,
+                source: 'wedding_landing_page',
+                event_date: date,
+                event_location: city,
+                budget: budget,
+            });
+        } catch (err) {
+            submit.disabled = false;
+            submit.textContent = 'Check my wedding date';
+            formError.textContent = 'We could not save that. Please message us on WhatsApp instead.';
+            formError.hidden = false;
+            return;
+        }
+
+        pushToSheet({
+            secret: C.sheetSecret,
+            timestamp: new Date().toISOString(),
+            name: name, phone: phone, weddingDate: date,
+            location: city, budget: budget, source: 'wedding_landing_page',
+        });
+
+        window.pixcyTrack('Lead', {
+            content_name: 'Wedding enquiry', content_category: 'wedding',
+            event_location: city, budget: budget,
+        });
+
+        var waText = 'Hi Pixcy Studios! I just checked my wedding date on your site.\n\n'
+            + 'Name: ' + name + '\nWedding date: ' + date + '\nLocation: ' + city + '\nBudget: ' + budget;
+        document.getElementById('done-wa').href = waUrl(waText);
+        document.querySelectorAll('a.wa').forEach(function (a) { a.href = waUrl(waText); });
+
+        document.getElementById('gate').hidden = true;
+        document.getElementById('unlocked').hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Past the form, "Check my date" has no job left — hand the whole
+        // sticky bar to WhatsApp.
+        var sticky = document.getElementById('sticky');
+        document.getElementById('s-date').remove();
+        sticky.classList.add('one-up', 'show');
+    });
+}
+
+/* ── Sticky bar ───────────────────────────────────────────────────────── */
+function wireSticky() {
+    var sticky = document.getElementById('sticky');
+    var card = document.querySelector('.card');
+    document.body.classList.add('has-sticky');
+
+    var io = new IntersectionObserver(function (entries) {
+        // Show it once the form has scrolled out of view, not before —
+        // while the form is on screen the bar is just noise over it.
+        sticky.classList.toggle('show', !entries[0].isIntersecting);
+    }, { threshold: 0 });
+    io.observe(card);
+}
+
+/* ── Boot ─────────────────────────────────────────────────────────────── */
+(async function () {
+    var page = await dbGet('wedding_page').catch(function () { return null; });
+    applyOverrides(page);
+
+    renderBudgets();
+    renderLeadFilm();
+    renderMoreFilms();
+    renderAlbums();
+    renderLocked();
+    renderReviews();
+    wireWhatsApp();
+    wireForm();
+    wireSticky();
+
+    document.getElementById('modal-close').addEventListener('click', closeFilm);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeFilm(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeFilm(); });
+
+    document.querySelectorAll('[data-social]').forEach(function (a) {
+        a.addEventListener('click', function () {
+            window.pixcyTrack('ViewContent', { content_type: 'social', content_name: a.dataset.social });
+        });
+    });
+})();
+</script>
+</body>
+</html>

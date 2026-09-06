@@ -77,6 +77,7 @@
         <button class="tab-btn" data-tab="theme">Site Theme</button>
         <button class="tab-btn" data-tab="prewedding">Pre-Wedding Page</button>
         <button class="tab-btn" data-tab="maternity">Maternity Page</button>
+        <button class="tab-btn" data-tab="weddinglp">Wedding LP (Ads)</button>
     </div>
 
     <!-- Branding Tab -->
@@ -443,6 +444,190 @@
 
         <button class="btn-save" id="btn-save-maternity">Save Maternity Page</button>
         <div class="message" id="maternity-message"></div>
+    </div>
+
+    <div class="tab-content" data-content="weddinglp">
+        <h2>Wedding Landing Page (Meta Ads)</h2>
+        <p class="help-text">Controls <strong>pixcystudios.in/wedding/</strong> &mdash; the page your wedding ads point at. It is hidden from Google on purpose so it never competes with the homepage. Changes go live as soon as you save.</p>
+
+        <h3>Headline</h3>
+        <div class="form-group">
+            <label>Location chip (top right)</label>
+            <input type="text" id="wl-area" placeholder="Chennai">
+        </div>
+        <div class="form-group">
+            <label>Headline</label>
+            <textarea id="wl-headline" rows="2" placeholder="Your Wedding Deserves More Than Just Photographs."></textarea>
+        </div>
+        <div class="form-group">
+            <label>Sub-headline</label>
+            <textarea id="wl-subtext" rows="2"></textarea>
+        </div>
+
+        <h3>The film shown before the form</h3>
+        <p class="help-text">One film plays before anyone fills the form &mdash; it is what earns the enquiry. The other two stay locked until they send it.</p>
+        <div class="form-group">
+            <label>Lead film &mdash; YouTube link</label>
+            <input type="url" id="wl-film0-url" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="form-group">
+            <label>Lead film &mdash; Caption</label>
+            <input type="text" id="wl-film0-title" placeholder="Tamil Wedding Film">
+        </div>
+
+        <h3>Films unlocked after the form</h3>
+        <div class="form-group">
+            <label>Film 2 &mdash; YouTube link</label>
+            <input type="url" id="wl-film1-url" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="form-group">
+            <label>Film 2 &mdash; Caption</label>
+            <input type="text" id="wl-film1-title" placeholder="Christian Wedding">
+        </div>
+        <div class="form-group">
+            <label>Film 3 &mdash; YouTube link</label>
+            <input type="url" id="wl-film2-url" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="form-group">
+            <label>Film 3 &mdash; Caption</label>
+            <input type="text" id="wl-film2-title" placeholder="Nikkah Highlights">
+        </div>
+
+        <h3>Sample albums (PDF)</h3>
+        <p class="help-text">Shown after the form is sent. An album with no PDF link is not displayed at all, so you can add them one at a time.</p>
+        <h4 style="margin:18px 0 8px;">Album 1 &mdash; Album Design</h4>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="wl-alb1-title" placeholder="Album Design">
+        </div>
+        <div class="form-group">
+            <label>Small line under the title</label>
+            <input type="text" id="wl-alb1-note" placeholder="Sample wedding album">
+        </div>
+        <div class="form-group">
+            <label>PDF link (Google Drive)</label>
+            <input type="url" id="wl-alb1-pdf" placeholder="https://drive.google.com/file/d/.../view">
+            <small style="color:#888;">Set the Drive link to <em>Anyone with the link</em>. Left blank, this album stays hidden on the page.</small>
+        </div>
+        <div class="form-group">
+            <label>Cover image</label>
+            <input type="file" id="wl-alb1-cover" accept="image/*">
+            <div class="preview" id="wl-alb1-cover-preview"></div>
+        </div>
+        <h4 style="margin:18px 0 8px;">Album 2 &mdash; Pre / Post Wedding</h4>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="wl-alb2-title" placeholder="Pre / Post Wedding">
+        </div>
+        <div class="form-group">
+            <label>Small line under the title</label>
+            <input type="text" id="wl-alb2-note" placeholder="Sample album">
+        </div>
+        <div class="form-group">
+            <label>PDF link (Google Drive)</label>
+            <input type="url" id="wl-alb2-pdf" placeholder="https://drive.google.com/file/d/.../view">
+            <small style="color:#888;">Set the Drive link to <em>Anyone with the link</em>. Left blank, this album stays hidden on the page.</small>
+        </div>
+        <div class="form-group">
+            <label>Cover image</label>
+            <input type="file" id="wl-alb2-cover" accept="image/*">
+            <div class="preview" id="wl-alb2-cover-preview"></div>
+        </div>
+        <h4 style="margin:18px 0 8px;">Album 3 &mdash; Couple Portrait</h4>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="wl-alb3-title" placeholder="Couple Portrait">
+        </div>
+        <div class="form-group">
+            <label>Small line under the title</label>
+            <input type="text" id="wl-alb3-note" placeholder="Sample album">
+        </div>
+        <div class="form-group">
+            <label>PDF link (Google Drive)</label>
+            <input type="url" id="wl-alb3-pdf" placeholder="https://drive.google.com/file/d/.../view">
+            <small style="color:#888;">Set the Drive link to <em>Anyone with the link</em>. Left blank, this album stays hidden on the page.</small>
+        </div>
+        <div class="form-group">
+            <label>Cover image</label>
+            <input type="file" id="wl-alb3-cover" accept="image/*">
+            <div class="preview" id="wl-alb3-cover-preview"></div>
+        </div>
+
+        <h3>Form</h3>
+        <div class="form-group">
+            <label>Form heading</label>
+            <input type="text" id="wl-form-heading" placeholder="Is your date still open?">
+        </div>
+        <div class="form-group">
+            <label>Text under the heading</label>
+            <textarea id="wl-form-sub" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Budget ranges &mdash; one per line</label>
+            <textarea id="wl-budgets" rows="7"></textarea>
+            <small style="color:#888;">This field filters harder than anything else on the page. Put your real numbers here.</small>
+        </div>
+        <div class="form-group">
+            <label>Line under the button</label>
+            <input type="text" id="wl-trust" placeholder="Rated 5.0 on Google">
+        </div>
+        <div class="form-group">
+            <label>Locked strip caption</label>
+            <input type="text" id="wl-locked" placeholder="Leave blank to count films and albums automatically">
+        </div>
+
+        <h3>After they send it</h3>
+        <div class="form-group">
+            <label>Heading</label>
+            <input type="text" id="wl-done-heading" placeholder="We have your date.">
+        </div>
+        <div class="form-group">
+            <label>Text</label>
+            <textarea id="wl-done-text" rows="2"></textarea>
+        </div>
+
+        <h3>Reviews</h3>
+        <p class="help-text">Three real Google reviews. Leave all blank to keep the ones already on the page.</p>
+        <div class="form-group">
+            <label>Review 1</label>
+            <textarea id="wl-rev1-text" rows="3"></textarea>
+            <input type="text" id="wl-rev1-author" placeholder="Name" style="margin-top:6px;">
+        </div>
+        <div class="form-group">
+            <label>Review 2</label>
+            <textarea id="wl-rev2-text" rows="3"></textarea>
+            <input type="text" id="wl-rev2-author" placeholder="Name" style="margin-top:6px;">
+        </div>
+        <div class="form-group">
+            <label>Review 3</label>
+            <textarea id="wl-rev3-text" rows="3"></textarea>
+            <input type="text" id="wl-rev3-author" placeholder="Name" style="margin-top:6px;">
+        </div>
+
+        <h3>WhatsApp</h3>
+        <div class="form-group">
+            <label>Number (country code, no plus sign)</label>
+            <input type="text" id="wl-whatsapp" placeholder="919940056549">
+        </div>
+        <div class="form-group">
+            <label>Pre-filled message</label>
+            <input type="text" id="wl-whatsapp-text" placeholder="Hi Pixcy Studios! I am looking for wedding photography.">
+        </div>
+
+        <h3>Google Sheet copy</h3>
+        <p class="help-text">Every enquiry is saved to your CRM first, always. This adds a second copy as a row in the Drive spreadsheet. Setup steps are in <code>wedding-leads-sheet.gs</code> in the project folder.</p>
+        <div class="form-group">
+            <label>Apps Script web app URL</label>
+            <input type="url" id="wl-sheet-webhook" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+        <div class="form-group">
+            <label>Webhook secret</label>
+            <input type="text" id="wl-sheet-secret" placeholder="Must match SHARED_SECRET in the script">
+            <small style="color:#888;">This sits in the public page source, so it only deters casual spam. It is not a password &mdash; never reuse a real one here.</small>
+        </div>
+
+        <button class="btn-save" id="btn-save-weddinglp">Save Wedding Landing Page</button>
+        <div class="message" id="weddinglp-message"></div>
     </div>
 </div>
 

@@ -104,6 +104,7 @@ function setupButtonListeners() {
     document.getElementById('btn-save-theme').addEventListener('click', saveTheme);
     document.getElementById('btn-save-prewedding').addEventListener('click', savePreWeddingPage);
     document.getElementById('btn-save-maternity').addEventListener('click', saveMaternityPage);
+    document.getElementById('btn-save-weddinglp').addEventListener('click', saveWeddingLandingPage);
 }
 
 // ─── Portfolio Drop Zone ───────────────────────────────────────────────────
@@ -116,10 +117,10 @@ function setupPortfolioDrop() {
 
 // ─── Load All Data ─────────────────────────────────────────────────────────
 async function loadAllData() {
-    const [logo, hero, srv, port, vids, coup, test, about, contact, theme, prewedding, maternity] = await Promise.all([
+    const [logo, hero, srv, port, vids, coup, test, about, contact, theme, prewedding, maternity, weddinglp] = await Promise.all([
         dbGet('logo'), dbGet('hero'), dbGet('services'), dbGet('portfolio'),
         dbGet('videos'), dbGet('couples'), dbGet('testimonials'), dbGet('about'), dbGet('contact'), dbGet('theme'),
-        dbGet('pre_wedding_page'), dbGet('maternity_page')
+        dbGet('pre_wedding_page'), dbGet('maternity_page'), dbGet('wedding_page')
     ]);
 
     if (logo) document.getElementById('logo-text').value = logo.text || '';
@@ -209,6 +210,50 @@ async function loadAllData() {
         document.getElementById('mb-testimonial-author').value = maternity.testimonialAuthor || '';
         document.getElementById('mb-cta-heading').value = maternity.ctaHeading || '';
         document.getElementById('mb-cta-subtext').value = maternity.ctaSubtext || '';
+    }
+
+    if (weddinglp) {
+        const w = weddinglp;
+        const val = (id, v) => { document.getElementById(id).value = v || ''; };
+
+        val('wl-area', w.area);
+        val('wl-headline', w.headline);
+        val('wl-subtext', w.subtext);
+        val('wl-form-heading', w.formHeading);
+        val('wl-form-sub', w.formSub);
+        val('wl-trust', w.trustText);
+        val('wl-locked', w.lockedText);
+        val('wl-done-heading', w.doneHeading);
+        val('wl-done-text', w.doneText);
+        val('wl-whatsapp', w.whatsapp);
+        val('wl-whatsapp-text', w.whatsappText);
+        val('wl-sheet-webhook', w.sheetWebhook);
+        val('wl-sheet-secret', w.sheetSecret);
+        val('wl-budgets', (w.budgets || []).join('\n'));
+
+        // Films are stored as bare YouTube ids; show them back as full links
+        // so the field round-trips with what was pasted in.
+        const films = [w.leadFilm || {}, ...(w.moreFilms || [])];
+        films.slice(0, 3).forEach((f, i) => {
+            val(`wl-film${i}-url`, f.id ? `https://www.youtube.com/watch?v=${f.id}` : '');
+            val(`wl-film${i}-title`, f.title);
+        });
+
+        (w.albums || []).slice(0, 3).forEach((alb, i) => {
+            const n = i + 1;
+            val(`wl-alb${n}-title`, alb.title);
+            val(`wl-alb${n}-note`, alb.note);
+            val(`wl-alb${n}-pdf`, alb.pdf);
+            if (alb.cover) {
+                document.getElementById(`wl-alb${n}-cover-preview`).innerHTML =
+                    `<img src="${alb.cover}" style="max-width:200px;margin-top:8px;border-radius:4px;">`;
+            }
+        });
+
+        (w.reviews || []).slice(0, 3).forEach((r, i) => {
+            val(`wl-rev${i + 1}-text`, r.text);
+            val(`wl-rev${i + 1}-author`, r.author);
+        });
     }
 }
 
@@ -610,6 +655,80 @@ async function saveMaternityPage() {
 
     await dbSet('maternity_page', data);
     msg('maternity-message', 'Maternity page saved!');
+    hideToast();
+}
+
+// ─── Wedding Landing Page (Meta Ads) ────────────────────────────────────────
+// Accepts any YouTube URL shape and stores the bare video id, matching what
+// content.js does for the homepage videos grid.
+function youtubeId(url) {
+    if (!url) return '';
+    const m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([-\w]+)/);
+    return m ? m[1] : String(url).trim();
+}
+
+async function saveWeddingLandingPage() {
+    showToast('Saving wedding landing page…');
+    const existing = await dbGet('wedding_page') || {};
+    const get = id => document.getElementById(id).value.trim();
+
+    const films = [];
+    for (const i of [0, 1, 2]) {
+        const id = youtubeId(get(`wl-film${i}-url`));
+        const title = get(`wl-film${i}-title`);
+        if (id) films.push({ id, title: title || 'Wedding Film' });
+    }
+
+    const existingAlbums = existing.albums || [];
+    const albums = [];
+    for (const i of [0, 1, 2]) {
+        const n = i + 1;
+        let cover = (existingAlbums[i] || {}).cover || '';
+        const file = document.getElementById(`wl-alb${n}-cover`);
+        if (file.files[0]) {
+            cover = await uploadImage(file.files[0]);
+            document.getElementById(`wl-alb${n}-cover-preview`).innerHTML =
+                `<img src="${cover}" style="max-width:200px;margin-top:8px;border-radius:4px;">`;
+        }
+        albums.push({
+            title: get(`wl-alb${n}-title`) || (existingAlbums[i] || {}).title || '',
+            note: get(`wl-alb${n}-note`),
+            pdf: get(`wl-alb${n}-pdf`),
+            cover,
+        });
+    }
+
+    const reviews = [];
+    for (const n of [1, 2, 3]) {
+        const text = get(`wl-rev${n}-text`);
+        if (text) reviews.push({ text, author: get(`wl-rev${n}-author`) });
+    }
+
+    const budgets = get('wl-budgets').split('\n').map(b => b.trim()).filter(Boolean);
+
+    const data = {
+        area: get('wl-area'),
+        headline: get('wl-headline'),
+        subtext: get('wl-subtext'),
+        formHeading: get('wl-form-heading'),
+        formSub: get('wl-form-sub'),
+        trustText: get('wl-trust'),
+        lockedText: get('wl-locked'),
+        doneHeading: get('wl-done-heading'),
+        doneText: get('wl-done-text'),
+        leadFilm: films[0] || existing.leadFilm || null,
+        moreFilms: films.slice(1),
+        albums,
+        budgets,
+        reviews,
+        whatsapp: get('wl-whatsapp'),
+        whatsappText: get('wl-whatsapp-text'),
+        sheetWebhook: get('wl-sheet-webhook'),
+        sheetSecret: get('wl-sheet-secret'),
+    };
+
+    await dbSet('wedding_page', data);
+    msg('weddinglp-message', 'Wedding landing page saved!');
     hideToast();
 }
 
