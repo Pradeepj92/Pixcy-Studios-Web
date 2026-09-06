@@ -23,13 +23,20 @@
     var queue = [];
     var ready = false;
 
+    // Same two consent models as analytics.js: strict opt-in by default,
+    // or opt-out on pages that set window.CONSENT_MODE = 'opt-out' (paid ad
+    // landing pages, where the page's purpose is measuring the ad itself and
+    // a non-blocking notice covers the disclosure a blocking banner would).
     function hasConsent() {
+        var optOut = window.CONSENT_MODE === 'opt-out';
         try {
-            return localStorage.getItem('cookieConsent') === 'accepted';
+            var consent = localStorage.getItem('cookieConsent');
+            return optOut ? consent !== 'declined' : consent === 'accepted';
         } catch (e) {
-            // Storage blocked (private mode, embedded webview). Treat an
-            // unreadable choice as "not accepted" rather than assuming yes.
-            return false;
+            // Storage blocked. An opt-in page still fails safe to no
+            // tracking; an opt-out page has no way to see a decline, so its
+            // default -- track -- still applies.
+            return optOut;
         }
     }
 

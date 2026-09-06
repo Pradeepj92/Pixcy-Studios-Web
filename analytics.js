@@ -1,9 +1,25 @@
-// Loads GA4 and Clarity only if the visitor already accepted analytics
-// cookies via the cookie banner on the homepage. Used on standalone pages
-// (404, thank-you, privacy policy, terms) that don't carry their own
-// cookie banner UI.
+// Loads GA4 and Clarity once consent allows it. Used on standalone pages
+// (404, thank-you, privacy policy, terms, and the ad landing pages) that
+// don't carry their own analytics-loading logic.
+//
+// Two consent models, chosen per page by window.CONSENT_MODE:
+//   - default ("opt-in"): nothing loads until the visitor accepts. This is
+//     the site-wide default and what every ordinary page uses.
+//   - "opt-out": loads immediately; only a visitor who actively declines
+//     stops it. Set only on pages built for paid ad traffic (currently
+//     /wedding/), where the page's whole purpose is measuring the ad that
+//     brought the visitor here, and a lightweight non-blocking notice
+//     covers the same disclosure a blocking banner would.
 (function () {
-    if (localStorage.getItem('cookieConsent') !== 'accepted') return;
+    var consent = null;
+    try { consent = localStorage.getItem('cookieConsent'); } catch (e) {
+        // Storage blocked (private mode, embedded webview). An opt-out page
+        // has no way to know the visitor declined, so its default -- track --
+        // still applies; a strict opt-in page still fails safe to no tracking.
+    }
+    var optOut = window.CONSENT_MODE === 'opt-out';
+    var allowed = optOut ? consent !== 'declined' : consent === 'accepted';
+    if (!allowed) return;
 
     const gaId = window.GA_MEASUREMENT_ID;
     if (gaId && gaId !== 'G-XXXXXXXXXX') {
