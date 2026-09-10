@@ -32,7 +32,7 @@
     <link rel="preload" as="image" fetchpriority="high" href="https://i.ytimg.com/vi/1pKmZ3KyCLU/maxresdefault.jpg">
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&display=swap" rel="stylesheet"></noscript>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&amp;display=swap" rel="stylesheet"></noscript>
 
     <!-- Tracking IDs. Drop the Meta Pixel ID in and the Pixel switches on;
          an empty string leaves it off.
@@ -406,7 +406,7 @@
 
         <div class="card">
             <h2 id="form-heading">Is your date still open?</h2>
-            <p id="form-sub">Five quick things. We&rsquo;ll confirm on WhatsApp &mdash; and the rest of our work opens right here.</p>
+            <p id="form-sub">Four quick details. We&rsquo;ll confirm on WhatsApp &mdash; and the rest of our work opens right here.</p>
 
             <form id="lead-form" novalidate>
                 <div class="field">
@@ -431,11 +431,6 @@
                         <input type="text" id="f-city" name="city" placeholder="Chennai" required>
                         <span class="err" id="e-city"></span>
                     </div>
-                </div>
-                <div class="field">
-                    <label for="f-budget">Approximate budget</label>
-                    <select id="f-budget" name="budget" required></select>
-                    <span class="err" id="e-budget"></span>
                 </div>
                 <button type="submit" class="btn" id="submit">Check my wedding date</button>
                 <p class="form-err" id="form-error" hidden></p>
@@ -564,16 +559,11 @@ var C = {
         { id: 'V_o9TWFkwro', title: 'Christian Wedding' },
         { id: 'jYslLh4yGcs', title: 'Nikkah Highlights' },
     ],
-    // Album PDFs are added in admin. Any album without a link is not shown,
-    // so the live page never renders a dead "View Album" button.
     albums: [
         { title: 'Album Design',      note: 'Sample wedding album', cover: cl('v1783059073/ruwh9uvjs79zh0ivmwi0', 300), pdf: '' },
         { title: 'Pre / Post Wedding', note: 'Sample album',        cover: cl('v1783059159/ppnd9grgvtqf2ayqhm0k', 300), pdf: '' },
         { title: 'Couple Portrait',   note: 'Sample album',         cover: cl('v1783059227/o8pcces14ltlypwefhqb', 300), pdf: '' },
     ],
-    // Matches the studio's real package range. No "under" band: the
-    // lowest package is 70,000, so a floor option would just collect leads
-    // below what's actually offered.
     budgets: [
         '70,000 - 1,00,000', '1,00,000 - 1,50,000', '1,50,000 - 2,00,000',
         'Above 2,00,000', 'Not sure yet',
@@ -710,12 +700,6 @@ function renderReviews() {
     }).join('');
 }
 
-function renderBudgets() {
-    var sel = document.getElementById('f-budget');
-    sel.innerHTML = '<option value="">Select a range</option>' +
-        C.budgets.map(function (b) { return '<option value="' + b + '">' + b + '</option>'; }).join('');
-}
-
 /* ── Form ─────────────────────────────────────────────────────────────── */
 function setErr(name, msg) {
     var input = document.getElementById('f-' + name);
@@ -766,20 +750,18 @@ function wireForm() {
         var phone = normalisePhone(document.getElementById('f-phone').value);
         var date = document.getElementById('f-date').value;
         var city = document.getElementById('f-city').value.trim();
-        var budget = document.getElementById('f-budget').value;
 
         var ok = true;
         if (!name) { setErr('name', 'Please tell us your name.'); ok = false; } else setErr('name', '');
         if (!/^\d{10}$/.test(phone)) { setErr('phone', 'Enter a 10-digit mobile number.'); ok = false; } else setErr('phone', '');
         if (!date) { setErr('date', 'Pick your date.'); ok = false; } else setErr('date', '');
         if (!city) { setErr('city', 'Which city?'); ok = false; } else setErr('city', '');
-        if (!budget) { setErr('budget', 'Choose a range.'); ok = false; } else setErr('budget', '');
         if (!ok) { form.querySelector('.invalid').focus(); return; }
 
         submit.disabled = true;
         submit.textContent = 'Checking…';
 
-        var message = 'Wedding date: ' + date + ' | Location: ' + city + ' | Budget: ' + budget;
+        var message = 'Wedding date: ' + date + ' | Location: ' + city;
 
         try {
             await insertLead({
@@ -791,7 +773,6 @@ function wireForm() {
                 source: 'wedding_landing_page',
                 event_date: date,
                 event_location: city,
-                budget: budget,
             });
         } catch (err) {
             submit.disabled = false;
@@ -805,16 +786,16 @@ function wireForm() {
             secret: C.sheetSecret,
             timestamp: new Date().toISOString(),
             name: name, phone: phone, weddingDate: date,
-            location: city, budget: budget, source: 'wedding_landing_page',
+            location: city, source: 'wedding_landing_page',
         });
 
         window.pixcyTrack('Lead', {
             content_name: 'Wedding enquiry', content_category: 'wedding',
-            event_location: city, budget: budget,
+            event_location: city,
         });
 
         var waText = 'Hi Pixcy Studios! I just checked my wedding date on your site.\n\n'
-            + 'Name: ' + name + '\nWedding date: ' + date + '\nLocation: ' + city + '\nBudget: ' + budget;
+            + 'Name: ' + name + '\nWedding date: ' + date + '\nLocation: ' + city;
         document.getElementById('done-wa').href = waUrl(waText);
         document.querySelectorAll('a.wa').forEach(function (a) { a.href = waUrl(waText); });
 
@@ -849,7 +830,6 @@ function wireSticky() {
     var page = await dbGet('wedding_page').catch(function () { return null; });
     applyOverrides(page);
 
-    renderBudgets();
     renderLeadFilm();
     renderMoreFilms();
     renderAlbums();
